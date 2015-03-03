@@ -47,8 +47,11 @@ function getGradeDistribution(teacher, subjectCode, courseCode) {
         method: 'GET',
         action: 'xhttp',
         url: url
-    }, function(responseText) {
-        console.log(responseText);
+    }, function(html) {
+        var parser = new DOMParser();
+        var htmlDoc = parser.parseFromString(html, "text/html");
+        var page = $(htmlDoc);
+        console.log(page.find('#gradedistribution-grid'));
     });
 }
 

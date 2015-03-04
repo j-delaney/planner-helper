@@ -39,6 +39,7 @@
       ],
       "js": [
         "js/jquery/jquery.min.js",
+        "src/inject/gradeDist.js",
         "src/inject/inject.js"
       ]
     }

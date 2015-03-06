@@ -1,3 +1,9 @@
+function getMostRecent(gradeDists) {
+    $.each(gradeDists, function (i, val) {
+        console.log(val, i);
+    })
+}
+
 function getGradeDistribution(teacher, course, callback) {
     var url = 'http://asucsd.ucsd.edu/gradeDistribution?' +
         'GradeDistribution%5BTERM_CODE%5D=' +
@@ -22,7 +28,11 @@ function getGradeDistribution(teacher, course, callback) {
         if (tableRows.first().children().first().hasClass('empty')) {
             console.log('No results found');
         } else {
-            tableRows.each(function (i, cells) {
+            var gradeDists = [];
+
+            $(tableRows).each(function (i, tr) {
+                var cells = $(tr).children();
+                console.log(tr);
                 var termCode = $(cells[0]).text(); //e.g. SP13
                 var gpa = $(cells[5]).text();
                 var aPercent = $(cells[6]).text();
@@ -31,8 +41,19 @@ function getGradeDistribution(teacher, course, callback) {
                 var dPercent = $(cells[9]).text();
                 var fPercent = $(cells[10]).text();
                 var wPercent = $(cells[11]).text();
-                console.log(gpa, aPercent, bPercent, cPercent, dPercent, fPercent, wPercent);
+                gradeDists.push({
+                    termCode: termCode,
+                    aPercent: aPercent,
+                    bPercent: bPercent,
+                    cPercent: cPercent,
+                    dPercent: dPercent,
+                    fPercent: fPercent,
+                    wPercent: wPercent,
+                    gpa: gpa
+                });
             });
+
+            getMostRecent(gradeDists);
         }
     });
 }

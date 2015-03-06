@@ -1,7 +1,36 @@
 function getMostRecent(gradeDists) {
+    var mostRecent = {};
+    var mostRecentSeason = '';
+    var mostRecentYear = '';
+
     $.each(gradeDists, function (i, val) {
-        console.log(val, i);
-    })
+        var thisSeason = val.termCode.substr(0, 2);
+        var thisYear = val.termCode.substr(2, 4);
+
+        if (Object.keys(mostRecent).length === 0) { //If mostRecent is empty
+            mostRecent = val;
+            mostRecentSeason = thisSeason;
+            mostRecentYear = thisYear;
+        } else {
+            if (thisYear > mostRecentYear) {
+                mostRecent = val;
+                mostRecentSeason = thisSeason;
+                mostRecentYear = thisYear;
+            } else if (thisYear === mostRecentYear) {
+                if (thisSeason === 'FA') {
+                    mostRecent = val;
+                    mostRecentSeason = thisSeason;
+                    mostRecentYear = thisYear;
+                } else if (thisSeason === 'WI' && mostRecentSeason !== 'FA') {
+                    mostRecent = val;
+                    mostRecentSeason = thisSeason;
+                    mostRecentYear = thisYear;
+                }
+            }
+        }
+    });
+
+    return mostRecent;
 }
 
 function getGradeDistribution(teacher, course, callback) {
@@ -26,13 +55,12 @@ function getGradeDistribution(teacher, course, callback) {
         var tableRows = page.find('#gradedistribution-grid').children('table.items').children('tbody').children();
 
         if (tableRows.first().children().first().hasClass('empty')) {
-            console.log('No results found');
+            callback(null);
         } else {
             var gradeDists = [];
 
             $(tableRows).each(function (i, tr) {
                 var cells = $(tr).children();
-                console.log(tr);
                 var termCode = $(cells[0]).text(); //e.g. SP13
                 var gpa = $(cells[5]).text();
                 var aPercent = $(cells[6]).text();
@@ -53,7 +81,8 @@ function getGradeDistribution(teacher, course, callback) {
                 });
             });
 
-            getMostRecent(gradeDists);
+            var mostRecent = getMostRecent(gradeDists);
+            callback(mostRecent);
         }
     });
 }

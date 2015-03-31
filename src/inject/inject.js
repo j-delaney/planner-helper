@@ -32,13 +32,18 @@ function parseTeacherName(teacher) {
     };
 }
 
-function findTeacherName() {
+function findTeacherName(page) {
     var teacher = $('#listing').find('ul.courseinfo').children('li').first().text();
-    return parseTeacherName(teacher);
 }
 
-function findClass(params) {
-    var result = parseCourseID(params['courseid']);
+function findClass(params, page, a) {
+    var courseid;
+    if (page === 'Select') {
+        courseid = $(a).text();
+    } else {
+        courseid = params['courseid'];
+    }
+    var result = parseCourseID(courseid);
     if (!result || result.length !== 2) {
         console.error('Problem parsing course ID: ' + params);
         return false;
@@ -54,6 +59,23 @@ var plannerHelper = null;
 
 function formatBase(teacher, course) {
     plannerHelper.find('h2').text('Planner Helper Data for ' + teacher.fname + ' ' + teacher.lname + ', ' + course.subjectCode + course.courseCode);
+}
+
+function reloadData(params, page, a) {
+    var teacher = findTeacherName(page);
+    var course = findClass(params, page, a);
+
+    plannerHelper.find('.yes-data').hide();
+    plannerHelper.find('.no-data').hide();
+    plannerHelper.find('.loading-data').show();
+
+    formatBase(teacher, course);
+    getRMP(teacher, function () {});
+    getCape(teacher, course, function () {});
+    getGradeDistribution(teacher, course, function () {});
+
+    $('#planner-helper-data').show();
+    $('#planner-helper-nodata').hide();
 }
 
 $(document).ready(function () {
@@ -76,20 +98,16 @@ $(document).ready(function () {
         var params = parseQuery(a.search);
 
         if ('sectionletter' in params) { //Viewing a teacher
-            var teacher = findTeacherName();
-            var course = findClass(params);
+            reloadData(params, 'Default', a);
+        }
+    });
 
-            plannerHelper.find('.yes-data').hide();
-            plannerHelper.find('.no-data').hide();
-            plannerHelper.find('.loading-data').show();
+    $('#calendar').on('click', 'a', function (event) {
+        var a = $(event.target)[0];
+        var params = parseQuery(a.search);
 
-            formatBase(teacher, course);
-            getRMP(teacher, function () {});
-            getCape(teacher, course, function () {});
-            getGradeDistribution(teacher, course, function () {});
-
-            $('#planner-helper-data').show();
-            $('#planner-helper-nodata').hide();
+        if (params.jlinkevent === 'Select') {
+            reloadData(params, 'Select', a);
         }
     });
 });

@@ -92,6 +92,12 @@ function reloadData(params, page, a) {
 }
 
 $(document).ready(function () {
+    var href = window.location.href;
+
+    if (href === 'https://act.ucsd.edu/classPlanner/planner' || href === 'http://act.ucsd.edu/classPlanner/planner') {
+        return;
+    }
+
      plannerHelper = $(
         '<div id="planner-helper">' +
             '<h2>Planner Helper Data</h2>' +

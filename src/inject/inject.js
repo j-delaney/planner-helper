@@ -34,6 +34,7 @@ function parseTeacherName(teacher) {
 
 function findTeacherName(page) {
     var teacher = $('#listing').find('ul.courseinfo').children('li').first().text();
+    return parseTeacherName(teacher);
 }
 
 function findClass(params, page, a) {
@@ -61,21 +62,33 @@ function formatBase(teacher, course) {
     plannerHelper.find('h2').text('Planner Helper Data for ' + teacher.fname + ' ' + teacher.lname + ', ' + course.subjectCode + course.courseCode);
 }
 
+function waitUntilDoneLoading(fn) {
+    if ($('#loading').is(':hidden')) {
+        fn();
+    } else {
+        setTimeout(function () {
+            return waitUntilDoneLoading(fn);
+        }, 100);
+    }
+}
+
 function reloadData(params, page, a) {
-    var teacher = findTeacherName(page);
-    var course = findClass(params, page, a);
+    waitUntilDoneLoading(function () {
+        var teacher = findTeacherName(page);
+        var course = findClass(params, page, a);
 
-    plannerHelper.find('.yes-data').hide();
-    plannerHelper.find('.no-data').hide();
-    plannerHelper.find('.loading-data').show();
+        plannerHelper.find('.yes-data').hide();
+        plannerHelper.find('.no-data').hide();
+        plannerHelper.find('.loading-data').show();
 
-    formatBase(teacher, course);
-    getRMP(teacher, function () {});
-    getCape(teacher, course, function () {});
-    getGradeDistribution(teacher, course, function () {});
+        formatBase(teacher, course);
+        getRMP(teacher, function () {});
+        getCape(teacher, course, function () {});
+        getGradeDistribution(teacher, course, function () {});
 
-    $('#planner-helper-data').show();
-    $('#planner-helper-nodata').hide();
+        $('#planner-helper-data').show();
+        $('#planner-helper-nodata').hide();
+    });
 }
 
 $(document).ready(function () {

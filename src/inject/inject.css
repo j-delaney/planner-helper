@@ -1,0 +1,39 @@
+/*#navigation {
+    width: 300px;
+}
+
+.gradeDist {
+
+}
+
+.gradeDist .head {
+    font-weight: bold;
+    border-bottom: 1px solid black;
+    text-align: center;
+}
+
+.gd-td {
+    padding: 1px !important;
+    border-right: 1px solid black;
+}
+
+.gradeDist td:last-child {
+    border-right: none;
+}*/
+
+#planner-helper {
+    border: 1px solid #181818;
+    border-radius: 10px;
+    padding: 10px;
+}
+
+.section {
+    display: inline-block;
+    width: 33%;
+    padding: 3px;
+    vertical-align: top;
+}
+
+#planner-helper-data {
+    display: none;
+}

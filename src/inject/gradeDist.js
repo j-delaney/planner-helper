@@ -1,3 +1,50 @@
+var gradeDist = null;
+
+function makeGradeDistSection() {
+    gradeDist = $(
+        '<div class="section">' +
+            '<h3>Grade Distribution</h3>' +
+            '<div id="grade-dist">' +
+                '<div class="yes-data">' +
+                    '<ul>' +
+                        '<li><strong>A: </strong><span id="grade-dist-a"></span></li>' +
+                        '<li><strong>B: </strong><span id="grade-dist-b"></span></li>' +
+                        '<li><strong>C: </strong><span id="grade-dist-c"></span></li>' +
+                        '<li><strong>D: </strong><span id="grade-dist-d"></span></li>' +
+                        '<li><strong>F: </strong><span id="grade-dist-f"></span></li>' +
+                        '<li><strong>W: </strong><span id="grade-dist-w"></span></li>' +
+                        '<li><strong>GPA: </strong><span id="grade-dist-gpa"></span></li>' +
+                    '</ul>' +
+                '</div>' +
+                '<div class="no-data">No data could be found for this professor</div>' +
+                '<div class="loading-data">Loading data...</div>' +
+            '</div>' +
+        '</div>'
+    );
+
+    return gradeDist
+}
+
+function formatGradeDist(data) {
+    gradeDist.find('.loading-data').hide();
+
+    if (data) {
+        gradeDist.find('.yes-data').show();
+        gradeDist.find('h3').html('<a href="'+data.url+'" target="_blank">Grade Distribution</a>');
+
+        gradeDist.find('#grade-dist-a').text(data.aPercent);
+        gradeDist.find('#grade-dist-b').text(data.bPercent);
+        gradeDist.find('#grade-dist-c').text(data.cPercent);
+        gradeDist.find('#grade-dist-d').text(data.dPercent);
+        gradeDist.find('#grade-dist-f').text(data.fPercent);
+        gradeDist.find('#grade-dist-w').text(data.wPercent);
+        gradeDist.find('#grade-dist-gpa').text(data.gpa);
+    } else {
+        gradeDist.find('h3').html('Grade Distribution');
+        gradeDist.find('.no-data').show();
+    }
+}
+
 function getMostRecent(gradeDists) {
     var mostRecent = {};
     var mostRecentSeason = '';
@@ -82,7 +129,9 @@ function getGradeDistribution(teacher, course, callback) {
             });
 
             var mostRecent = getMostRecent(gradeDists);
-            callback(mostRecent);
+            mostRecent.url = url;
+            formatGradeDist(mostRecent);
+            callback();
         }
     });
 }

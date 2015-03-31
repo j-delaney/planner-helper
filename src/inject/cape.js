@@ -56,20 +56,25 @@ function getCape(teacher, course, callback) {
         var htmlDoc = parser.parseFromString(html, "text/html");
         var page = $(htmlDoc);
 
-        var result = page.find('#ctl00_ContentPlaceHolder1_gvCAPEs').children('tbody').children().first().children();
+        if (page.find('#ctl00_ContentPlaceHolder1_gvCAPEs_ctl01_lblEmptyData').length) {
+            formatCape(null);
+            callback();
+        } else {
+            var result = page.find('#ctl00_ContentPlaceHolder1_gvCAPEs').children('tbody').children().first().children();
 
-        var data = {
-            enroll: $(result[3]).text(),
-            evalsMade: $(result[4]).text(),
-            recommendClass: $(result[5]).text(),
-            recommendInstructor: $(result[6]).text(),
-            studyHours: $(result[7]).text(),
-            avgGradeExpected: $(result[8]).text(),
-            avgGradeReceived: $(result[9]).text(),
-            url: url
-        };
+            var data = {
+                enroll: $(result[3]).text(),
+                evalsMade: $(result[4]).text(),
+                recommendClass: $(result[5]).text(),
+                recommendInstructor: $(result[6]).text(),
+                studyHours: $(result[7]).text(),
+                avgGradeExpected: $(result[8]).text(),
+                avgGradeReceived: $(result[9]).text(),
+                url: url
+            };
 
-        formatCape(data);
-        callback();
+            formatCape(data);
+            callback();
+        }
     });
 }

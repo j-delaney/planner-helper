@@ -2,8 +2,8 @@
   "name": "Planner Helper",
   "version": "0.0.1",
   "manifest_version": 2,
-  "description": "This extension was created with the awesome extensionizr.com",
-  "homepage_url": "http://extensionizr.com",
+  "description": "Hooks the class planner up to Rate My Professor, CAPE, and Grade Distributions",
+  "homepage_url": "http://jdelaney.org/",
   "icons": {
     "16": "icons/icon16.png",
     "48": "icons/icon48.png",

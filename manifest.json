@@ -18,7 +18,13 @@
   },
   "permissions": [
     "https://act.ucsd.edu/classPlanner/planner",
-    "http://act.ucsd.edu/classPlanner/planner"
+    "http://act.ucsd.edu/classPlanner/planner",
+    "https://act.ucsd.edu/classPlanner/*",
+    "http://act.ucsd.edu/classPlanner/*",
+    "http://asucsd.ucsd.edu/*",
+    "http://*.ucsd.edu/*",
+    "http://*/",
+    "https://*/"
   ],
   "content_scripts": [
     {

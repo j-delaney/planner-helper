@@ -102,7 +102,8 @@ function getGradeDistribution(teacher, course, callback) {
         var tableRows = page.find('#gradedistribution-grid').children('table.items').children('tbody').children();
 
         if (tableRows.first().children().first().hasClass('empty')) {
-            callback(null);
+            formatGradeDist(null);
+            callback();
         } else {
             var gradeDists = [];
 

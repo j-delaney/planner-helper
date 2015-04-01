@@ -23,19 +23,19 @@ function makeRMPSection() {
 }
 
 function formatRMP(data) {
-    rmp.find('.loading-data').hide();
+    rmp.find('.loading-data').slideUp(500);
 
     if (data) {
-        rmp.find('.yes-data').show();
-        rmp.find('h3').html('<a href="'+data.url+'" target="_blank">Rate My Professor</a>');
-
         rmp.find('#overall-quality').text(data.overallQuality);
         rmp.find('#helpfulness').text(data.helpfulness);
         rmp.find('#clarity').text(data.clarity);
         rmp.find('#easiness').text(data.easiness);
+        rmp.find('.yes-data').slideDown(500);
+
+        rmp.find('h3').html('<a href="'+data.url+'" target="_blank">Rate My Professor</a>');
     } else {
         rmp.find('h3').html('Rate My Professor');
-        rmp.find('.no-data').show();
+        rmp.find('.no-data').slideDown(500);
     }
 }
 

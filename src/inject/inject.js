@@ -77,9 +77,9 @@ function reloadData(params, page, a) {
         var teacher = findTeacherName(page);
         var course = findClass(params, page, a);
 
-        plannerHelper.find('.yes-data').hide();
-        plannerHelper.find('.no-data').hide();
-        plannerHelper.find('.loading-data').show();
+        plannerHelper.find('.yes-data').slideUp(250);
+        plannerHelper.find('.no-data').slideUp(250);
+        plannerHelper.find('.loading-data').slideDown(250);
 
         formatBase(teacher, course);
         getRMP(teacher, function () {});

@@ -26,12 +26,9 @@ function makeGradeDistSection() {
 }
 
 function formatGradeDist(data) {
-    gradeDist.find('.loading-data').hide();
+    gradeDist.find('.loading-data').slideUp(500);
 
     if (data) {
-        gradeDist.find('.yes-data').show();
-        gradeDist.find('h3').html('<a href="'+data.url+'" target="_blank">Grade Distribution</a>');
-
         gradeDist.find('#grade-dist-a').text(data.aPercent);
         gradeDist.find('#grade-dist-b').text(data.bPercent);
         gradeDist.find('#grade-dist-c').text(data.cPercent);
@@ -39,9 +36,12 @@ function formatGradeDist(data) {
         gradeDist.find('#grade-dist-f').text(data.fPercent);
         gradeDist.find('#grade-dist-w').text(data.wPercent);
         gradeDist.find('#grade-dist-gpa').text(data.gpa);
+        gradeDist.find('.yes-data').slideDown(500);
+
+        gradeDist.find('h3').html('<a href="'+data.url+'" target="_blank">Grade Distribution</a>');
     } else {
         gradeDist.find('h3').html('Grade Distribution');
-        gradeDist.find('.no-data').show();
+        gradeDist.find('.no-data').slideDown(500);
     }
 }
 

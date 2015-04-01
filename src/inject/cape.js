@@ -24,21 +24,20 @@ function makeCapeSection() {
 }
 
 function formatCape(data) {
-    cape.find('.loading-data').hide();
+    cape.find('.loading-data').slideUp(500);
 
     if (data) {
-        cape.find('.yes-data').show();
-
-        cape.find('h3').html('<a href="'+data.url+'" target="_blank">CAPE</a>');
-
         cape.find('#cape-enrolled').text(data.enroll);
         cape.find('#cape-evals').text(data.evalsMade);
         cape.find('#cape-rcmd-class').text(data.recommendClass);
         cape.find('#cape-rcmd-instr').text(data.recommendInstructor);
         cape.find('#cape-study-hrs').text(data.studyHours);
+        cape.find('.yes-data').slideDown(500);
+
+        cape.find('h3').html('<a href="'+data.url+'" target="_blank">CAPE</a>');
     } else {
         cape.find('h3').html('CAPE');
-        cape.find('.no-data').show();
+        cape.find('.no-data').slideDown(500);
     }
 }
 

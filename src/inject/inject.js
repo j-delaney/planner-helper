@@ -127,6 +127,8 @@ $(document).ready(function () {
 
         if (params.jlinkevent === 'Select') {
             reloadData(params, 'Select', a);
+        } else if (params.jlinkevent === 'Subsections') {
+            reloadData(params, 'Default1', a);
         }
     });
 });

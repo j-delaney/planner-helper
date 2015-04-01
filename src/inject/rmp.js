@@ -80,23 +80,28 @@ function getRMP(teacher, callback) {
         results = results.substr(results.indexOf('{'), results.length - results.indexOf('{') - 2);
         var json = JSON.parse(results);
 
-        var teachers = json.grouped.content_type_s.groups[0].doclist.docs;
-        var teacher = false;
-        for (var i in teachers) {
-            if (teachers[i].schoolname_s === 'University of California San Diego') {
-                teacher = teachers[i].pk_id;
-                break;
-            }
-        }
-
-        if (teacher) {
-            getTeacherInfo(teacher, function (data) {
-                formatRMP(data);
-                callback();
-            });
-        } else {
+        if (json.responseHeader.status === 0) {
             formatRMP(null);
             callback();
+        } else {
+            var teachers = json.grouped.content_type_s.groups[0].doclist.docs;
+            var teacher = false;
+            for (var i in teachers) {
+                if (teachers[i].schoolname_s === 'University of California San Diego') {
+                    teacher = teachers[i].pk_id;
+                    break;
+                }
+            }
+
+            if (teacher) {
+                getTeacherInfo(teacher, function (data) {
+                    formatRMP(data);
+                    callback();
+                });
+            } else {
+                formatRMP(null);
+                callback();
+            }
         }
     });
 }

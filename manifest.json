@@ -40,7 +40,7 @@
         "https://act.ucsd.edu/classPlanner/*"
       ],
       "js": [
-        "js/jquery/jquery.min.js",
+        "js/jquery.min.js",
         "src/inject/gradeDist.js",
         "src/inject/cape.js",
         "src/inject/rmp.js",

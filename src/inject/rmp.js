@@ -64,6 +64,7 @@ function getTeacherInfo(id, callback) {
 }
 
 function getRMP(teacher, callback) {
+    //Rick Ord is listed as Richard Ord on the Class Planner but Rick on Rate My Professor
     if (teacher.lname === 'Ord' && teacher.fname === 'Richard') {
         teacher.fname = 'Rick';
     }

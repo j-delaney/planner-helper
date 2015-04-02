@@ -45,7 +45,12 @@ function formatGradeDist(data) {
     }
 }
 
+/**
+ * Takes a list of grade distribution rows and returns whichever one is the most recent.
+ * @param gradeDists
+ */
 function getMostRecent(gradeDists) {
+    //TODO: Just sort by Term Code and remove this whole function
     var mostRecent = {};
     var mostRecentSeason = '';
     var mostRecentYear = '';

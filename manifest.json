@@ -9,7 +9,6 @@
     "48": "icons/calendar48.png",
     "128": "icons/calendar128.png"
   },
-  "default_locale": "en",
   "background": {
     "scripts": [
       "src/bg/background.js"

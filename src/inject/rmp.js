@@ -64,6 +64,7 @@ function getTeacherInfo(id, callback) {
 }
 
 function getRMP(teacher, callback) {
+    //Rick Ord is listed as Richard Ord on the Class Planner but Rick on Rate My Professor
     if (teacher.lname === 'Ord' && teacher.fname === 'Richard') {
         teacher.fname = 'Rick';
     }
@@ -80,7 +81,7 @@ function getRMP(teacher, callback) {
         results = results.substr(results.indexOf('{'), results.length - results.indexOf('{') - 2);
         var json = JSON.parse(results);
 
-        if (json.grouped.content_type_s.matches === 0) {
+        if (json.grouped.content_type_s.matches === 0) { //If no matches found
             formatRMP(null);
             callback();
         } else {

@@ -62,6 +62,11 @@ function formatBase(teacher, course) {
     plannerHelper.find('h2').text('Planner Helper Data for ' + teacher.fname + ' ' + teacher.lname + ', ' + course.subjectCode + course.courseCode);
 }
 
+/**
+ * We can't fetch data from the page until the sidebar with course info is done loading. This function
+ * waits until the loading icon is gone (i.e. the new data is done loading) and then calls the callback.
+ * @param fn The callback function to call when the page is done loading.
+ */
 function waitUntilDoneLoading(fn) {
     if ($('#loading').is(':hidden')) {
         fn();
@@ -72,7 +77,15 @@ function waitUntilDoneLoading(fn) {
     }
 }
 
+/**
+ * Updates the professor data shown to the user.
+ *
+ * @param params The params grabbed from the clicked link.
+ * @param page The page we're viewing.
+ * @param a The link object itself.
+ */
 function reloadData(params, page, a) {
+    //TODO: Refactor this entire thing.
     waitUntilDoneLoading(function () {
         var teacher = findTeacherName(page);
         var course = findClass(params, page, a);

@@ -81,7 +81,7 @@ function getRMP(teacher, callback) {
         results = results.substr(results.indexOf('{'), results.length - results.indexOf('{') - 2);
         var json = JSON.parse(results);
 
-        if (json.grouped.content_type_s.matches === 0) {
+        if (json.grouped.content_type_s.matches === 0) { //If no matches found
             formatRMP(null);
             callback();
         } else {

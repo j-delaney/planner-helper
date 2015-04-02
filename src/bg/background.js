@@ -1,3 +1,4 @@
+//Credit to Rob W from http://stackoverflow.com/a/7699773
 chrome.runtime.onMessage.addListener(function(request, sender, callback) {
     if (request.action == "xhttp") {
         var xhttp = new XMLHttpRequest();

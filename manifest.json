@@ -40,6 +40,7 @@
       ],
       "js": [
         "js/jquery.min.js",
+        "src/inject/data_section.js",
         "src/inject/gradeDist.js",
         "src/inject/cape.js",
         "src/inject/rmp.js",

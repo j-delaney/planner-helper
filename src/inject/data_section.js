@@ -98,7 +98,7 @@ DataSection.prototype.fetchHTML = function (url, callback) {
             that.elements.yesData.hide();
             that.elements.noData.hide();
             that.elements.loadingData.hide();
-            that.elements.errorData.slideDown(500);
+            that.elements.errorData.slideDown(500); //FIXME: This will break
             console.error(xhttp);
             callback(null);
         } else {

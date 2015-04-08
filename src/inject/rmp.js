@@ -20,8 +20,6 @@ RMP.prototype.getNewData = function (teacher, course, callback) {
         '&q=' + teacher.fname + '+' + teacher.lname +
         '&defType=edismax&qf=teacherfullname_t%5E1000+autosuggest&bf=pow(total_number_of_ratings_i%2C1.7)&sort=score+desc&siteName=rmp&group=on&group.field=content_type_s&group.limit=20';
 
-    var that = this;
-
     this.fetchData(url, function (results) {
         if (!results) {
             this.data = null;
@@ -45,16 +43,16 @@ RMP.prototype.getNewData = function (teacher, course, callback) {
             }
 
             if (teacher) {
-                that.getTeacherInfo(teacher, function (data) {
-                    that.data = data;
+                this.getTeacherInfo(teacher, function (data) {
+                    this.data = data;
                     callback();
                 });
             } else {
-                that.data = null;
+                this.data = null;
                 callback();
             }
         }
-    })
+    }.bind(this))
 };
 
 RMP.prototype.getTeacherInfo = function (id, callback) {

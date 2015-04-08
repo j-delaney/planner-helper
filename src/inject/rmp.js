@@ -1,69 +1,16 @@
-var rmp = null;
-
-function makeRMPSection() {
-    rmp = $(
-        '<div class="section">' +
-            '<h3>Rate My Professor</h3>' +
-            '<div id="rmp">' +
-                '<div class="yes-data">' +
-                    '<ul>' +
-                        '<li><strong>Overall Quality: </strong><span id="overall-quality"></span></li>' +
-                        '<li><strong>Helpfulness: </strong><span id="helpfulness"></span></li>' +
-                        '<li><strong>Clarity: </strong><span id="clarity"></span></li>' +
-                        '<li><strong>Easiness: </strong><span id="easiness"></span></li>' +
-                    '</ul>' +
-                '</div>' +
-                '<div class="no-data">No data could be found for this professor</div>' +
-                '<div class="loading-data">Loading data...</div>' +
-            '</div>' +
-        '</div>'
-    );
-
-    return rmp;
+function RMP() {
+    DataSection.call(this, 'Rate My Professor', 'rmp', [
+        {label: 'Overall Quality', dataField: 'overallQuality'},
+        {label: 'Helpfulness', dataField: 'helpfulness'},
+        {label: 'Clarity', dataField: 'clarity'},
+        {label: 'Easiness', dataField: 'easiness'}
+    ]);
 }
 
-function formatRMP(data) {
-    rmp.find('.loading-data').slideUp(500);
+RMP.prototype = Object.create(DataSection.prototype);
+RMP.prototype.constructor = RMP;
 
-    if (data) {
-        rmp.find('#overall-quality').text(data.overallQuality);
-        rmp.find('#helpfulness').text(data.helpfulness);
-        rmp.find('#clarity').text(data.clarity);
-        rmp.find('#easiness').text(data.easiness);
-        rmp.find('.yes-data').slideDown(500);
-
-        rmp.find('h3').html('<a href="'+data.url+'" target="_blank">Rate My Professor</a>');
-    } else {
-        rmp.find('h3').html('Rate My Professor');
-        rmp.find('.no-data').slideDown(500);
-    }
-}
-
-function getTeacherInfo(id, callback) {
-    var url = 'http://www.ratemyprofessors.com/ShowRatings.jsp?tid=' + id;
-
-    chrome.runtime.sendMessage({
-        method: 'GET',
-        action: 'xhttp',
-        url: url
-    }, function (html) {
-        var parser = new DOMParser();
-        var htmlDoc = parser.parseFromString(html, "text/html");
-        var page = $(htmlDoc);
-
-        var data = {};
-
-        data.overallQuality = page.find('.rating-breakdown').find('.breakdown-wrapper').children().first().find('.grade').text();
-        data.helpfulness = $(page.find('.rating-breakdown').find('.faux-slides').children()[0]).find('.rating').text();
-        data.clarity = $(page.find('.rating-breakdown').find('.faux-slides').children()[1]).find('.rating').text();
-        data.easiness = $(page.find('.rating-breakdown').find('.faux-slides').children()[2]).find('.rating').text();
-        data.url = url;
-
-        callback(data);
-    });
-}
-
-function getRMP(teacher, callback) {
+RMP.prototype.getNewData = function (teacher, course, callback) {
     //Rick Ord is listed as Richard Ord on the Class Planner but Rick on Rate My Professor
     if (teacher.lname === 'Ord' && teacher.fname === 'Richard') {
         teacher.fname = 'Rick';
@@ -73,16 +20,17 @@ function getRMP(teacher, callback) {
         '&q=' + teacher.fname + '+' + teacher.lname +
         '&defType=edismax&qf=teacherfullname_t%5E1000+autosuggest&bf=pow(total_number_of_ratings_i%2C1.7)&sort=score+desc&siteName=rmp&group=on&group.field=content_type_s&group.limit=20';
 
-    chrome.runtime.sendMessage({
-        method: 'GET',
-        action: 'xhttp',
-        url: url
-    }, function (results) {
+    this.fetchData(url, function (results) {
+        if (!results) {
+            this.data = null;
+            return callback();
+        }
+
         results = results.substr(results.indexOf('{'), results.length - results.indexOf('{') - 2);
         var json = JSON.parse(results);
 
         if (json.grouped.content_type_s.matches === 0) { //If no matches found
-            formatRMP(null);
+            this.data = null;
             callback();
         } else {
             var teachers = json.grouped.content_type_s.groups[0].doclist.docs;
@@ -95,14 +43,35 @@ function getRMP(teacher, callback) {
             }
 
             if (teacher) {
-                getTeacherInfo(teacher, function (data) {
-                    formatRMP(data);
+                this.getTeacherInfo(teacher, function (data) {
+                    this.data = data;
                     callback();
                 });
             } else {
-                formatRMP(null);
+                this.data = null;
                 callback();
             }
         }
-    });
-}
+    }.bind(this))
+};
+
+RMP.prototype.getTeacherInfo = function (id, callback) {
+    var url = 'http://www.ratemyprofessors.com/ShowRatings.jsp?tid=' + id;
+
+    this.fetchHTML(url, function (page) {
+        if (!page) {
+            this.data = null;
+            return callback();
+        }
+
+        var data = {};
+        data.overallQuality = page.find('.rating-breakdown').find('.breakdown-wrapper').children().first().find('.grade').text();
+        data.helpfulness = $(page.find('.rating-breakdown').find('.faux-slides').children()[0]).find('.rating').text();
+        data.clarity = $(page.find('.rating-breakdown').find('.faux-slides').children()[1]).find('.rating').text();
+        data.easiness = $(page.find('.rating-breakdown').find('.faux-slides').children()[2]).find('.rating').text();
+        data.url = url;
+
+        this.data = data;
+        callback();
+    }.bind(this));
+};

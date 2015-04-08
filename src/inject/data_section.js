@@ -37,14 +37,13 @@ DataSection.prototype.createElements = function () {
     this.elements.errorData = $('<div class="error-data">There was an unexpected error fetching your data.</div>');
     this.elements.title = $('<h3>' + this.title + '</h3>');
 
-    this.elements.main = $(
-        '<div class="section">' +
-        this.elements.title +
-        this.elements.yesData +
-        this.elements.noData +
-        this.elements.loadingData +
-        this.elements.errorData +
-        '</div>'
+    this.elements.main = $('<div class="section"></div>');
+
+    this.elements.main.append(this.elements.title,
+        this.elements.yesData,
+        this.elements.noData,
+        this.elements.loadingData,
+        this.elements.errorData
     );
 
     //Hide all the fields
@@ -152,8 +151,8 @@ DataSection.prototype.fetchHTML = function (url, callback) {
  * @param course A course object containg the fields subjectCode, courseCode.
  * @param callback The function to call upon completing the update.
  */
-DataSection.prototype.getNewData = function (teacher, course, callback, context) {
-    callback.call(context);
+DataSection.prototype.getNewData = function (teacher, course, callback) {
+    callback();
 };
 
 /**

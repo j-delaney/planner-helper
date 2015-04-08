@@ -37,5 +37,5 @@ Cape.prototype.getNewData = function (teacher, course, callback) {
         };
 
         return callback();
-    });
+    }.bind(this));
 };

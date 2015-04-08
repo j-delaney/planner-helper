@@ -84,7 +84,7 @@ function waitUntilDoneLoading(fn) {
  * @param page The page we're viewing.
  * @param a The link object itself.
  */
-function reloadData(params, page, a) {
+function reloadData(params, page, a, rmp, cape, gradeDist) {
     //TODO: Refactor this entire thing.
     waitUntilDoneLoading(function () {
         var teacher = findTeacherName(page);
@@ -95,9 +95,9 @@ function reloadData(params, page, a) {
         plannerHelper.find('.loading-data').slideDown(250);
 
         formatBase(teacher, course);
-        getRMP(teacher, function () {});
-        getCape(teacher, course, function () {});
-        getGradeDistribution(teacher, course, function () {});
+        rmp.updateData(teacher, course, function () {});
+        cape.updateData(teacher, course, function () {});
+        gradeDist.updateData(teacher, course, function () {});
 
         $('#planner-helper-data').show();
         $('#planner-helper-nodata').hide();
@@ -121,16 +121,20 @@ $(document).ready(function () {
     );
 
     $('#tdr_content_content').children().first().after(plannerHelper);
-    plannerHelper.find('#planner-helper-data').append(makeRMPSection());
-    plannerHelper.find('#planner-helper-data').append(makeCapeSection());
-    plannerHelper.find('#planner-helper-data').append(makeGradeDistSection());
+    var rmp = new RMP();
+    var cape = new Cape();
+    var gradeDist = new GradeDist();
+
+    plannerHelper.find('#planner-helper-data').append(rmp.elements.main);
+    plannerHelper.find('#planner-helper-data').append(cape.elements.main);
+    plannerHelper.find('#planner-helper-data').append(gradeDist.elements.main);
 
     $('#listing').on('click', 'a', function (event) {
         var a = $(event.target)[0];
         var params = parseQuery(a.search);
 
         if ('sectionletter' in params) { //Viewing a teacher
-            reloadData(params, 'Default', a);
+            reloadData(params, 'Default', a, rmp, cape, gradeDist);
         }
     });
 
@@ -139,9 +143,9 @@ $(document).ready(function () {
         var params = parseQuery(a.search);
 
         if (params.jlinkevent === 'Select') {
-            reloadData(params, 'Select', a);
+            reloadData(params, 'Select', a, rmp, cape, gradeDist);
         } else if (params.jlinkevent === 'Subsections') {
-            reloadData(params, 'Default1', a);
+            reloadData(params, 'Default1', a, rmp, cape, gradeDist);
         }
     });
 });

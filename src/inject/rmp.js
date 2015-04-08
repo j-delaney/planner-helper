@@ -58,11 +58,9 @@ RMP.prototype.getNewData = function (teacher, course, callback) {
 RMP.prototype.getTeacherInfo = function (id, callback) {
     var url = 'http://www.ratemyprofessors.com/ShowRatings.jsp?tid=' + id;
 
-    var that = this;
-
     this.fetchHTML(url, function (page) {
         if (!page) {
-            that.data = null;
+            this.data = null;
             return callback();
         }
 
@@ -73,7 +71,7 @@ RMP.prototype.getTeacherInfo = function (id, callback) {
         data.easiness = $(page.find('.rating-breakdown').find('.faux-slides').children()[2]).find('.rating').text();
         data.url = url;
 
-        that.data = data;
+        this.data = data;
         callback();
-    });
+    }.bind(this));
 };

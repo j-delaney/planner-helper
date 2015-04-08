@@ -110,6 +110,12 @@ PlannerHelper.prototype.getCourse = function (params) {
     }
 };
 
+/**
+ * Reloads the data for RMP, CAPEs, and GradeDistribution.
+ *
+ * @public
+ * @param event The click event.
+ */
 PlannerHelper.prototype.reloadData = function (event) {
     var params = this.parseClickedLink(event);
     if (params.jlinkevent === 'Select' || params.jlinkevent === 'Subsections') {

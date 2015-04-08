@@ -81,6 +81,7 @@ DataSection.prototype.createDataList = function () {
  * Makes an async GET request to the given URL. If the request fails the page will will display
  * and log an error.
  *
+ * @protected
  * @param url The URL to get data from.
  * @param callback A callback function with one param `data` that contains the response data or
  * `null` if the request failed.
@@ -160,6 +161,7 @@ DataSection.prototype.getNewData = function (teacher, course, callback) {
 /**
  * Updates the data for this section given a certain teacher and course.
  *
+ * @public
  * @param {{}} teacher A teacher object containg the fields fullname, nomiddle, fname, lname.
  * @param {{}} course A course object containg the fields subjectCode, courseCode.
  * @param callback The function to call upon completing the update.

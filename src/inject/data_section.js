@@ -152,8 +152,8 @@ DataSection.prototype.fetchHTML = function (url, callback) {
  * @param course A course object containg the fields subjectCode, courseCode.
  * @param callback The function to call upon completing the update.
  */
-DataSection.prototype.getNewData = function (teacher, course, callback) {
-    callback();
+DataSection.prototype.getNewData = function (teacher, course, callback, context) {
+    callback.call(context);
 };
 
 /**
@@ -192,5 +192,5 @@ DataSection.prototype.updateData = function (teacher, course, callback) {
         }
 
         callback();
-    });
+    }.bind(this));
 };

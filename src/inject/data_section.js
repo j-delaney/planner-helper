@@ -170,7 +170,7 @@ DataSection.prototype.updateData = function (teacher, course, callback) {
     this.elements.yesData.slideUp(250);
     this.elements.noData.slideUp(250);
     this.elements.errorData.slideUp(250);
-    this.elements.loadingData.slideDown(500);
+    this.elements.loadingData.slideDown(250);
 
     this.getNewData(teacher, course, function () {
         this.elements.loadingData.slideUp(500);

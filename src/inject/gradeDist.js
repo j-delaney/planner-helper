@@ -64,7 +64,7 @@ GradeDist.prototype.getNewData = function (teacher, course, callback) {
         this.data = getMostRecent(gradeDists);
         this.data.url = url;
         callback();
-    })
+    }.bind(this))
 };
 
 /**

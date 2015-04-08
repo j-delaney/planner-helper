@@ -77,6 +77,36 @@ DataSection.prototype.createDataList = function () {
 };
 
 /**
+ * Makes an async GET request to the given URL. If the request fails the page will will display
+ * and log an error.
+ *
+ * @param url The URL to get data from.
+ * @param callback A callback function with one param `data` that contains the response data or
+ * `null` if the request failed.
+ */
+DataSection.prototype.fetchData = function (url, callback) {
+    //Because of JS scoping we lose `this` upon entering the callback below
+    var that = this;
+
+    chrome.runtime.sendMessage({
+        method: 'GET',
+        action: 'xhttp',
+        url: url
+    }, function (xhttp) {
+        if (xhttp.status !== 200) {
+            that.elements.yesData.hide();
+            that.elements.noData.hide();
+            that.elements.loadingData.hide();
+            that.elements.errorData.slideDown(500); //FIXME: This will break
+            console.error(xhttp);
+            callback(null);
+        } else {
+            callback(xhttp.responseText);
+        }
+    })
+};
+
+/**
  * Makes an async GET request to the given URL. Takes the HTML response and converts it into
  * a virtual jQuery object. If the request fails the page will display and log an error.
  *

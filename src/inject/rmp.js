@@ -7,6 +7,9 @@ function RMP() {
     ]);
 }
 
+RMP.prototype = Object.create(DataSection.prototype);
+RMP.prototype.constructor = RMP;
+
 RMP.prototype.getNewData = function (teacher, course, callback) {
     //Rick Ord is listed as Richard Ord on the Class Planner but Rick on Rate My Professor
     if (teacher.lname === 'Ord' && teacher.fname === 'Richard') {

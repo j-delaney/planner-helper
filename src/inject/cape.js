@@ -26,7 +26,7 @@ Cape.prototype.getNewData = function (teacher, course, callback) {
         var result = page.find('#ctl00_ContentPlaceHolder1_gvCAPEs').children('tbody').children().first().children();
 
         this.data = {
-            enroll: $(result[3]).text(),
+            enrolled: $(result[3]).text(),
             evalsMade: $(result[4]).text(),
             recommendClass: $(result[5]).text(),
             recommendInstructor: $(result[6]).text(),

@@ -67,7 +67,7 @@ DataSection.prototype.createDataList = function () {
             this.fields[key].element = $('<span></span>');
             html +=
                 '<li>' +
-                '<strong>' + fields[key].label + ': </strong>' +
+                '<strong>' + this.fields[key].label + ': </strong>' +
                 this.fields[key].element +
                 '</li>';
         }

@@ -44,6 +44,7 @@
         "src/inject/gradeDist.js",
         "src/inject/cape.js",
         "src/inject/rmp.js",
+        "src/inject/planner_helper.js",
         "src/inject/inject.js"
       ]
     }

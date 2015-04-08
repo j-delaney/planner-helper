@@ -9,8 +9,6 @@ $(document).ready(function () {
 
     $('#tdr_content_content').children().first().after(plannerHelper.element);
 
-    console.log(plannerHelper);
-
     $('#listing').on('click', 'a', function (event) {
         plannerHelper.reloadData(event);
     });

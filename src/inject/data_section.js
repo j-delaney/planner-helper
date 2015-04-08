@@ -33,7 +33,8 @@ function DataSection(title, id, fields) {
 DataSection.prototype.createElements = function () {
     this.elements.noData = $('<div class="no-data">No data could be found for this professor</div>');
     this.elements.loadingData = $('<div class="loading-data">Loading data...</div>');
-    this.elements.yesData = $('<div class="yes-data">' + this.createDataList() + '</div>');
+    this.elements.yesData = $('<div class="yes-data"></div>');
+    this.elements.yesData.append(this.createDataList());
     this.elements.errorData = $('<div class="error-data">There was an unexpected error fetching your data.</div>');
     this.elements.title = $('<h3>' + this.title + '</h3>');
 
@@ -60,19 +61,20 @@ DataSection.prototype.createElements = function () {
  * @returns {string} The HTML for the data list.
  */
 DataSection.prototype.createDataList = function () {
-    var html = '<ul>';
+    var dataList = $('<ul></ul>');
     for (var key in this.fields) {
         if (this.fields.hasOwnProperty(key)) {
             this.fields[key].element = $('<span></span>');
-            html +=
+            var tmpObject = $(
                 '<li>' +
-                '<strong>' + this.fields[key].label + ': </strong>' +
-                this.fields[key].element +
-                '</li>';
+                    '<strong>' + this.fields[key].label + ': </strong>' +
+                '</li>'
+            );
+            tmpObject.append(this.fields[key].element);
+            dataList.append(tmpObject);
         }
     }
-    html += '</ul>';
-    return html;
+    return dataList;
 };
 
 /**

@@ -188,7 +188,7 @@ DataSection.prototype.updateData = function (teacher, course, callback) {
             this.elements.yesData.slideDown(500);
 
             //Change the title to be a link
-            this.elements.title.html('<a href="' + this.url + '" target="_blank">' + this.title + '</a>');
+            this.elements.title.html('<a href="' + this.data.url + '" target="_blank">' + this.title + '</a>');
         } else {
             this.elements.title.html(this.title);
             this.elements.noData.slideDown(500);

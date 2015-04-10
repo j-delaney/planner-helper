@@ -16,6 +16,8 @@ function DataSection(title, id, fields) {
     this.url = null;
     //Cache of all previously requested data with the key being "<subjectCode><courseCode> <fullname>"
     this.cache = {};
+    //The current course being parsed. To prevent race conditions hopefully
+    this.currentCourse = '';
 
     //Object of elements relevant to this section
     this.elements = {};
@@ -175,26 +177,33 @@ DataSection.prototype.updateData = function (teacher, course, callback) {
     this.elements.loadingData.slideDown(250);
 
     var cacheName = course.subjectCode + course.courseCode + ' ' + teacher.fullname;
+    this.currentCourse = cacheName;
 
     if (cacheName in this.cache) {
         this.data = this.cache[cacheName];
-        this.updateUI();
+        this.updateUI(cacheName);
         callback();
     } else {
         this.getNewData(teacher, course, function () {
             this.cache[cacheName] = this.data;
-            this.updateUI();
+            this.updateUI(cacheName);
             callback();
         }.bind(this));
     }
 };
 
 /**
- * Updates the UI to include the values in `this.data`
+ * Updates the UI to include the values in `this.data`.
  *
  * @private
+ * @param cacheName The cache name of the course we're updating for.
  */
-DataSection.prototype.updateUI = function () {
+DataSection.prototype.updateUI = function (cacheName) {
+    //If we're trying to update the UI for data that no longer matters then stop
+    if (cacheName !== this.currentCourse) {
+        return;
+    }
+
     this.elements.loadingData.slideUp(500);
 
     if (this.data) {

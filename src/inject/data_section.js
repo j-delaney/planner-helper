@@ -177,7 +177,6 @@ DataSection.prototype.updateData = function (teacher, course, callback) {
     var cacheName = course.subjectCode + course.courseCode + ' ' + teacher.fullname;
 
     if (cacheName in this.cache) {
-        console.log('Cache hit!');
         this.data = this.cache[cacheName];
         this.updateUI();
         callback();

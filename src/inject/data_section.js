@@ -14,6 +14,8 @@ function DataSection(title, id, fields) {
     this.data = null;
     //URL the user can click to see the most recently fetched data from the original source
     this.url = null;
+    //Cache of all previously requested data with the key being "<subjectCode><courseCode> <fullname>"
+    this.cache = {};
 
     //Object of elements relevant to this section
     this.elements = {};
@@ -172,28 +174,46 @@ DataSection.prototype.updateData = function (teacher, course, callback) {
     this.elements.errorData.slideUp(250);
     this.elements.loadingData.slideDown(250);
 
-    this.getNewData(teacher, course, function () {
-        this.elements.loadingData.slideUp(500);
+    var cacheName = course.subjectCode + course.courseCode + ' ' + teacher.fullname;
 
-        if (this.data) {
-            //Set all the fields
-            for (var key in this.fields) {
-                if (this.fields.hasOwnProperty(key)) {
-                    var newValue = this.data[this.fields[key].dataField];
-                    this.fields[key].element.text(newValue);
-                }
+    if (cacheName in this.cache) {
+        console.log('Cache hit!');
+        this.data = this.cache[cacheName];
+        this.updateUI();
+        callback();
+    } else {
+        this.getNewData(teacher, course, function () {
+            this.cache[cacheName] = this.data;
+            this.updateUI();
+            callback();
+        }.bind(this));
+    }
+};
+
+/**
+ * Updates the UI to include the values in `this.data`
+ *
+ * @private
+ */
+DataSection.prototype.updateUI = function () {
+    this.elements.loadingData.slideUp(500);
+
+    if (this.data) {
+        //Set all the fields
+        for (var key in this.fields) {
+            if (this.fields.hasOwnProperty(key)) {
+                var newValue = this.data[this.fields[key].dataField];
+                this.fields[key].element.text(newValue);
             }
-
-            //Show the data
-            this.elements.yesData.slideDown(500);
-
-            //Change the title to be a link
-            this.elements.title.html('<a href="' + this.data.url + '" target="_blank">' + this.title + '</a>');
-        } else {
-            this.elements.title.html(this.title);
-            this.elements.noData.slideDown(500);
         }
 
-        callback();
-    }.bind(this));
+        //Show the data
+        this.elements.yesData.slideDown(500);
+
+        //Change the title to be a link
+        this.elements.title.html('<a href="' + this.data.url + '" target="_blank">' + this.title + '</a>');
+    } else {
+        this.elements.title.html(this.title);
+        this.elements.noData.slideDown(500);
+    }
 };

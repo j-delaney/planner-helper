@@ -116,9 +116,9 @@ PlannerHelper.prototype.getCourse = function (params) {
  * @public
  * @param event The click event.
  */
-PlannerHelper.prototype.reloadData = function (event) {
+PlannerHelper.prototype.reloadData = function (event, parent) {
     var params = this.parseClickedLink(event);
-    if (params.jlinkevent === 'Select' || params.jlinkevent === 'Subsections') {
+    if ((params.jlinkevent === 'Select' && parent === 'calendar') || params.jlinkevent === 'Subsections') {
         this.waitUntilDoneLoading(function () {
             var teacher = this.getTeacher();
             var course = this.getCourse(params);

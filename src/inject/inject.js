@@ -10,9 +10,9 @@ $(document).ready(function () {
     $('#tdr_content_content').children().first().after(plannerHelper.element);
 
     $('#listing').on('click', 'a', function (event) {
-        plannerHelper.reloadData(event);
+        plannerHelper.reloadData(event, 'listing');
     });
     $('#calendar').on('click', 'a', function (event) {
-        plannerHelper.reloadData(event);
+        plannerHelper.reloadData(event, 'calendar');
     });
 });

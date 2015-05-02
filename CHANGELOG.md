@@ -8,6 +8,7 @@
 - URLs for the different sections are now correct.
 - Bug where the wrong data would display if the user clicks on a new class while the old one is still loading.
 - Attempting to load CAPE and Grade Distribution for discussion sections.
+- Unnecessary reloading when clicking a different lecture time for the same teacher/course. 
 
 ## 1.0.0 (2015-04-08)
 ### Changed

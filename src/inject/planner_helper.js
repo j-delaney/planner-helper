@@ -3,6 +3,9 @@ function PlannerHelper() {
     this.gradeDist = new GradeDist();
     this.cape = new Cape();
 
+    this.teacher = null;
+    this.course = null;
+
     this.element = null;
 
     this.createElement();
@@ -122,6 +125,15 @@ PlannerHelper.prototype.reloadData = function (event, parent) {
         this.waitUntilDoneLoading(function () {
             var teacher = this.getTeacher();
             var course = this.getCourse(params);
+
+            //Do nothing if we're trying to reload the data for the same prof and teacher
+            if (JSON.stringify(this.teacher) === JSON.stringify(teacher) && JSON.stringify(this.course) === JSON.stringify(course)) {
+                return;
+            }
+
+            //We need to make a copy since Richard Ord will be changed to Rick Ord later and it will mess up the equality check above
+            this.teacher = jQuery.extend({}, teacher);
+            this.course = jQuery.extend({}, course);
 
             this.element.find('h2').text('Planner Helper Data for ' + teacher.fname + ' ' + teacher.lname + ', ' + course.subjectCode + course.courseCode);
 

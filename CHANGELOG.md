@@ -1,6 +1,6 @@
 # Change Log
 
-## Unreleased
+## 1.0.1 (2015-05-01)
 ### Added
 - Basic non-persistent caching (so it doesn't keep regrabbing the same data).
 

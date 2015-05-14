@@ -5,16 +5,66 @@ function RMP() {
         {label: 'Clarity', dataField: 'clarity'},
         {label: 'Easiness', dataField: 'easiness'}
     ]);
+
+    //This is for teachers who have a different name on the class planner and RMP
+    //When fetching data it will look if the teacher matches oldFName and oldLname and if they do
+    //It will replace them with newFName and newLName
+    this.teacherReplace = [
+        {
+            oldFName: 'Richard',
+            oldLName: 'Ord',
+            newFName: 'Rick',
+            newLName: 'Ord'
+        },
+        {
+            oldFName: 'Geoffrey',
+            oldLName: 'Voelker',
+            newFName: 'Geoff',
+            newLName: 'Voelker'
+        },
+        {
+            oldFName: 'Mor',
+            oldLName: 'Kemp',
+            newFName: 'Mia',
+            newLName: 'Minnes-Kemp'
+        },
+        {
+            oldFName: 'John',
+            oldLName: 'Lee',
+            newFName: 'John Hoon',
+            newLName: 'Lee'
+        },
+        {
+            oldFName: 'Ilkay',
+            oldLName: 'Callaf',
+            newFName: 'Ilkay',
+            newLName: 'Altintas'
+        }
+    ]
+
 }
 
 RMP.prototype = Object.create(DataSection.prototype);
 RMP.prototype.constructor = RMP;
 
+/**
+ * Checks if the teacher name is in `this.teacherReplace` and if so fixes their name.
+ * @param teacher The Teacher name object. Will be modified.
+ * @private
+ */
+RMP.prototype.checkTeacher = function (teacher) {
+    this.teacherReplace.forEach(function (teacherCheck) {
+        if (teacher.fname === teacherCheck.oldFName && teacher.lname === teacherCheck.oldLName) {
+            teacher.fname = teacherCheck.newFName;
+            teacher.lname = teacherCheck.newLName;
+            return false; //Causes forEach to break
+        }
+        return true;
+    });
+};
+
 RMP.prototype.getNewData = function (teacher, course, callback) {
-    //Rick Ord is listed as Richard Ord on the Class Planner but Rick on Rate My Professor
-    if (teacher.lname === 'Ord' && teacher.fname === 'Richard') {
-        teacher.fname = 'Rick';
-    }
+    this.checkTeacher(teacher);
 
     var url = 'http://search.mtvnservices.com/typeahead/suggest/?solrformat=true&rows=10&callback=jQuery1110021761036990210414_1427756491821' +
         '&q=' + teacher.fname + '+' + teacher.lname +

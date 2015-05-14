@@ -1,5 +1,9 @@
 # Change Log
 
+## Unreleased
+### Fixed
+- Teachers with different names on RMP than the course listing will now properly fetch data.
+
 ## 1.0.1 (2015-05-01)
 ### Added
 - Basic non-persistent caching (so it doesn't keep regrabbing the same data).

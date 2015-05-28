@@ -99,16 +99,7 @@ DataSection.prototype.fetchData = function (url, callback) {
         action: 'xhttp',
         url: url
     }, function (xhttp) {
-        if (xhttp.status !== 200) {
-            that.elements.yesData.hide();
-            that.elements.noData.hide();
-            that.elements.loadingData.hide();
-            that.elements.errorData.slideDown(500); //FIXME: This will break
-            console.error(xhttp);
-            callback(null);
-        } else {
-            callback(xhttp.responseText);
-        }
+        callback(xhttp.responseText);
     })
 };
 
@@ -130,22 +121,13 @@ DataSection.prototype.fetchHTML = function (url, callback) {
         action: 'xhttp',
         url: url
     }, function (xhttp) {
-        if (xhttp.status !== 200) {
-            that.elements.yesData.hide();
-            that.elements.noData.hide();
-            that.elements.loadingData.hide();
-            that.elements.errorData.slideDown(500); //FIXME: This will break
-            console.error(xhttp);
-            callback(null);
-        } else {
-            //Convert the returned HTML into a virtual jQuery object
-            //We need to do it in this method so it doesn't load all resources (images, css, ...)
-            var parser = new DOMParser();
-            var htmlDoc = parser.parseFromString(xhttp.responseText, "text/html");
-            var page = $(htmlDoc);
+        //Convert the returned HTML into a virtual jQuery object
+        //We need to do it in this method so it doesn't load all resources (images, css, ...)
+        var parser = new DOMParser();
+        var htmlDoc = parser.parseFromString(xhttp.responseText, "text/html");
+        var page = $(htmlDoc);
 
-            callback(page);
-        }
+        callback(page);
     })
 };
 

@@ -1,6 +1,6 @@
 # Change Log
 
-## Unreleased
+## 1.0.2 (2015-05-28)
 ### Fixed
 - Teachers with different names on RMP than the course listing will now properly fetch data.
 - Entire extension breaking since Chrome is no longer giving XHTTP status codes.

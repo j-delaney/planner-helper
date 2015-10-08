@@ -21,6 +21,10 @@ function PlannerHelper() {
     this.init();
 }
 
+/**
+ * Initialize and test some variables that we need.
+ * @private
+ */
 PlannerHelper.prototype.init = function () {
     // Insert the main element into the page
     this.$searchDiv = $('#search-div-0');
@@ -34,7 +38,6 @@ PlannerHelper.prototype.init = function () {
 };
 
 /**
- *
  * @private
  */
 PlannerHelper.prototype.enableSearchEvent = function () {
@@ -42,7 +45,6 @@ PlannerHelper.prototype.enableSearchEvent = function () {
 };
 
 /**
- *
  * @private
  */
 PlannerHelper.prototype.disableSearchEvent = function () {
@@ -50,10 +52,10 @@ PlannerHelper.prototype.disableSearchEvent = function () {
 };
 
 /**
- *
+ * Takes a row from the search results and returns an object of the data associated with that row.
+ * Since each cell in the row has an 'aria-describedby' property we can use that for the property
+ * name.
  * @private
- * @param $row
- * @returns {{}}
  */
 PlannerHelper.prototype.getDataFromRow = function ($row) {
     var data = {};
@@ -70,10 +72,8 @@ PlannerHelper.prototype.getDataFromRow = function ($row) {
 };
 
 /**
- *
- * @param teacher
- * @param course
- * @returns {*|jQuery|HTMLElement}
+ * Creates a button that will show a teacher's data if it's clicked.
+ * @returns {jQuery}
  */
 PlannerHelper.prototype.makeViewDataButton = function (teacher, course) {
     // Save `this` as plannerHelper to prevent it being lost in the anonymous function.
@@ -90,6 +90,7 @@ PlannerHelper.prototype.makeViewDataButton = function (teacher, course) {
 };
 
 /**
+ * Goes through all the search results and attaches the "View Data" button to them.
  * @private
  */
 PlannerHelper.prototype.attachButtonToSearchResults = function () {
@@ -167,6 +168,7 @@ PlannerHelper.prototype.createElement = function () {
 };
 
 /**
+ * Aborts execution of the Chrome extension. Used for when an invariant fails.
  *
  * @private
  */
@@ -181,10 +183,7 @@ PlannerHelper.prototype.abort = function () {
 };
 
 /**
- *
  * @private
- * @param teacher
- * @param course
  */
 PlannerHelper.prototype.reloadData = function (teacher, course) {
     // Do nothing if we're trying to reload the data for the same prof and teacher

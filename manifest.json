@@ -1,6 +1,6 @@
 {
   "name": "Planner Helper",
-  "version": "1.0.2",
+  "version": "2.0.0",
   "manifest_version": 2,
   "description": "Hooks the class planner up to Rate My Professor, CAPE, and Grade Distributions",
   "homepage_url": "http://jdelaney.org/",
@@ -21,31 +21,31 @@
     "https://act.ucsd.edu/classPlanner/*",
     "http://act.ucsd.edu/classPlanner/*",
     "http://asucsd.ucsd.edu/*",
+    "https://act.ucsd.edu/webreg2/*",
     "http://*.ucsd.edu/*",
+    "http://search.mtvnservices.com/*",
+    "http://*.mtvnservices.com/*",
+    "http://search.mtvnservices.com/typeahead/suggest/*",
     "http://*/",
     "https://*/"
   ],
   "content_scripts": [
     {
       "matches": [
-        "https://act.ucsd.edu/classPlanner/*"
-      ],
-      "css": [
-        "src/inject/inject.css"
-      ]
-    },
-    {
-      "matches": [
-        "https://act.ucsd.edu/classPlanner/*"
+        "https://act.ucsd.edu/webreg2/*"
       ],
       "js": [
         "js/jquery.min.js",
+        "js/underscore.min.js",
         "src/inject/data_section.js",
         "src/inject/gradeDist.js",
         "src/inject/cape.js",
         "src/inject/rmp.js",
         "src/inject/planner_helper.js",
         "src/inject/inject.js"
+      ],
+      "css": [
+        "src/inject/inject.css"
       ]
     }
   ]

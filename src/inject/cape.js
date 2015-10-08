@@ -12,7 +12,7 @@ Cape.prototype = Object.create(DataSection.prototype);
 Cape.prototype.constructor = Cape;
 
 Cape.prototype.getNewData = function (teacher, course, callback) {
-    var url = 'http://cape.ucsd.edu/responses/Results.aspx?' +
+    var url = 'https://cape.ucsd.edu/responses/Results.aspx?' +
         'Name=' + encodeURIComponent(teacher.nomiddle)+
         '&CourseNumber=' + course.subjectCode + course.courseCode;
 

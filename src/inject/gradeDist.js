@@ -14,7 +14,7 @@ GradeDist.prototype = Object.create(DataSection.prototype);
 GradeDist.prototype.constructor = GradeDist;
 
 GradeDist.prototype.getNewData = function (teacher, course, callback) {
-    var url = 'http://asucsd.ucsd.edu/gradeDistribution?' +
+    var url = 'https://asucsd.ucsd.edu/gradeDistribution?' +
         'GradeDistribution%5BTERM_CODE%5D=' +
         '&GradeDistribution%5BSUBJECT_CODE%5D='+ course.subjectCode +
         '&GradeDistribution%5BCOURSE_CODE%5D=' + course.courseCode +

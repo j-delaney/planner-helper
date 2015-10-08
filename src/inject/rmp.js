@@ -108,7 +108,7 @@ RMP.prototype.getNewData = function (teacher, course, callback) {
 RMP.prototype.getTeacherInfo = function (id, callback) {
     var url = 'http://www.ratemyprofessors.com/ShowRatings.jsp?tid=' + id;
 
-    this.fetchHTML(url, function (page) {
+    this.fetchHTMLHttp(url, function (page) {
         if (!page) {
             this.data = null;
             return callback();

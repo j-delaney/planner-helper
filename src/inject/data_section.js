@@ -91,15 +91,26 @@ DataSection.prototype.createDataList = function () {
  * `null` if the request failed.
  */
 DataSection.prototype.fetchData = function (url, callback) {
-    //Because of JS scoping we lose `this` upon entering the callback below
-    var that = this;
-
     chrome.runtime.sendMessage({
         method: 'GET',
         action: 'xhttp',
         url: url
-    }, function (xhttp) {
-        callback(xhttp.responseText);
+    }, function (data) {
+        callback(data);
+    })
+};
+
+DataSection.prototype.fetchHTMLHttp = function (url, callback) {
+    chrome.runtime.sendMessage({
+        method: 'GET',
+        action: 'xhttp',
+        url: url
+    }, function (data) {
+        var parser = new DOMParser();
+        var htmlDoc = parser.parseFromString(data, "text/html");
+        var page = $(htmlDoc);
+
+        callback(page);
     })
 };
 
@@ -113,22 +124,15 @@ DataSection.prototype.fetchData = function (url, callback) {
  * `null` if the request failed.
  */
 DataSection.prototype.fetchHTML = function (url, callback) {
-    //Because of JS scoping we lose `this` upon entering the callback below
-    var that = this;
-
-    chrome.runtime.sendMessage({
-        method: 'GET',
-        action: 'xhttp',
-        url: url
-    }, function (xhttp) {
+    $.get(url, function (data) {
         //Convert the returned HTML into a virtual jQuery object
         //We need to do it in this method so it doesn't load all resources (images, css, ...)
         var parser = new DOMParser();
-        var htmlDoc = parser.parseFromString(xhttp.responseText, "text/html");
+        var htmlDoc = parser.parseFromString(data, "text/html");
         var page = $(htmlDoc);
 
         callback(page);
-    })
+    });
 };
 
 /**

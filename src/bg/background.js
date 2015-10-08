@@ -5,7 +5,7 @@ chrome.runtime.onMessage.addListener(function(request, sender, callback) {
         var method = request.method ? request.method.toUpperCase() : 'GET';
 
         xhttp.onload = function() {
-            callback(xhttp);
+            callback(xhttp.response);
         };
         xhttp.onerror = function() {
             // Do whatever you want on error. Don't forget to invoke the

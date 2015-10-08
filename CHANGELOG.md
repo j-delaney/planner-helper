@@ -1,5 +1,9 @@
 # Change Log
 
+## 2.0.0 (2015-10-08)
+### Fixed
+- Made compatible with WebReg 2.0.
+
 ## 1.0.2 (2015-05-28)
 ### Fixed
 - Teachers with different names on RMP than the course listing will now properly fetch data.

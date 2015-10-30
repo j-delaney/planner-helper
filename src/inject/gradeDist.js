@@ -53,6 +53,11 @@ GradeDist.prototype.getNewData = function (teacher, course, callback) {
         // If empty results then return that no data could be found.
         try {
             if (tableRows.first().children().first().hasClass('empty')) {
+                this.errorHandler.warning('Grade Distribution', {
+                    teacher: teacher,
+                    course: course,
+                    url: url
+                });
                 this.data = null;
                 return callback();
             }

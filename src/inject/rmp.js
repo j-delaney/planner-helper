@@ -103,20 +103,26 @@ RMP.prototype.getNewData = function (teacher, course, callback) {
             callback();
         } else {
             var teachers = json.grouped.content_type_s.groups[0].doclist.docs;
-            var teacher = false;
+            var teacherID = false;
             for (var i in teachers) {
                 if (teachers[i].schoolname_s === 'University of California San Diego') {
-                    teacher = teachers[i].pk_id;
+                    teacherID = teachers[i].pk_id;
                     break;
                 }
             }
 
-            if (teacher) {
-                this.getTeacherInfo(teacher, function (data) {
+            if (teacherID) {
+                this.getTeacherInfo(teacherID, function (data) {
                     this.data = data;
                     callback();
                 });
             } else {
+                this.errorHandler.warning('RMP3', {
+                    teacher: teacher,
+                    course: course,
+                    url: url,
+                    teachers: teachers
+                });
                 this.data = null;
                 callback();
             }

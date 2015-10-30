@@ -7,6 +7,7 @@ ErrorHandler.prototype.invariant = function (actual, expected) {
         expected = true;
 
         if (typeof actual === "undefined") {
+            console.log('NEITHER');
             actual = true;
         }
     }

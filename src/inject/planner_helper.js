@@ -1,9 +1,9 @@
 function PlannerHelper() {
     this.errorHandler = new ErrorHandler(this);
 
-    this.rmp = new RMP();
-    this.gradeDist = new GradeDist();
-    this.cape = new Cape();
+    this.rmp = new RMP(this.errorHandler);
+    this.gradeDist = new GradeDist(this.errorHandler);
+    this.cape = new Cape(this.errorHandler);
 
     this.teacher = null;
     this.course = null;

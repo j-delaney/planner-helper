@@ -171,7 +171,14 @@ PlannerHelper.prototype.createElement = function () {
         '<div id="planner-helper">' +
             '<h2>Planner Helper Data</h2>' +
             '<div id="planner-helper-data"></div>' +
-            '<div id="planner-helper-nodata">To view a professor\'s data, click the "View Data" button ' +
+            '<div id="planner-helper-nodata">' +
+            '<strong>You are using the beta version of Planner Helper. It may contain bugs. ' +
+            '</strong>If you encounter any, please email me at ' +
+            '<a href="mailto:1letterboy@gmail.com">1letterboy@gmail.com</a>. If you would like to use ' +
+            'the stable version of the extension you can download it ' +
+            '<a href="https://goo.gl/o8xjBq">here</a>.' +
+            '<br />' +
+            'To view a professor\'s data, click the "View Data" button ' +
             'that appears next to the professor\'s name in the search results.</div>' +
         '</div>'
     );

@@ -9,7 +9,7 @@
  * @param {{label, dataField}[]} fields An array of ojects with the format {label, dataField} where label
  * is the text to use on the `page` and `dataField` is the key that will hold the relevant data in `this.data`
  */
-function DataSection(title, id, fields) {
+function DataSection(title, id, fields, errorHandler) {
     //Object of most recently fetched data for this section
     this.data = null;
     //URL the user can click to see the most recently fetched data from the original source
@@ -18,6 +18,8 @@ function DataSection(title, id, fields) {
     this.cache = {};
     //The current course being parsed. To prevent race conditions hopefully
     this.currentCourse = '';
+
+    this.errorHandler = errorHandler;
 
     //Object of elements relevant to this section
     this.elements = {};

@@ -1,10 +1,10 @@
-function RMP() {
+function RMP(errorHandler) {
     DataSection.call(this, 'Rate My Professor', 'rmp', [
         {label: 'Overall Quality', dataField: 'overallQuality'},
         {label: 'Helpfulness', dataField: 'helpfulness'},
         {label: 'Clarity', dataField: 'clarity'},
         {label: 'Easiness', dataField: 'easiness'}
-    ]);
+    ], errorHandler);
 
     //This is for teachers who have a different name on the class planner and RMP
     //When fetching data it will look if the teacher matches oldFName and oldLname and if they do
@@ -72,14 +72,33 @@ RMP.prototype.getNewData = function (teacher, course, callback) {
 
     this.fetchData(url, function (results) {
         if (!results) {
+            this.errorHandler.warning('RMP1', {
+                teacher: teacher,
+                course: course,
+                url: url
+            });
             this.data = null;
             return callback();
         }
 
-        results = results.substr(results.indexOf('{'), results.length - results.indexOf('{') - 2);
-        var json = JSON.parse(results);
+        var json;
+
+        try {
+            results = results.substr(results.indexOf('{'), results.length - results.indexOf('{') - 2);
+            json = JSON.parse(results);
+        } catch (e) {
+            this.errorHandler.invariant();
+            this.data = null;
+            return callback();
+        }
+
 
         if (json.grouped.content_type_s.matches === 0) { //If no matches found
+            this.errorHandler.warning('RMP2', {
+                teacher: teacher,
+                course: course,
+                url: url
+            });
             this.data = null;
             callback();
         } else {
@@ -110,16 +129,24 @@ RMP.prototype.getTeacherInfo = function (id, callback) {
 
     this.fetchHTMLHttp(url, function (page) {
         if (!page) {
+            this.errorHandler.warning('RMP3', {
+                id: id,
+                url: url
+            });
             this.data = null;
             return callback();
         }
 
         var data = {};
-        data.overallQuality = page.find('.rating-breakdown').find('.breakdown-wrapper').children().first().find('.grade').text();
-        data.helpfulness = $(page.find('.rating-breakdown').find('.faux-slides').children()[0]).find('.rating').text();
-        data.clarity = $(page.find('.rating-breakdown').find('.faux-slides').children()[1]).find('.rating').text();
-        data.easiness = $(page.find('.rating-breakdown').find('.faux-slides').children()[2]).find('.rating').text();
-        data.url = url;
+        try {
+            data.overallQuality = page.find('.rating-breakdown').find('.breakdown-wrapper').children().first().find('.grade').text();
+            data.helpfulness = $(page.find('.rating-breakdown').find('.faux-slides').children()[0]).find('.rating').text();
+            data.clarity = $(page.find('.rating-breakdown').find('.faux-slides').children()[1]).find('.rating').text();
+            data.easiness = $(page.find('.rating-breakdown').find('.faux-slides').children()[2]).find('.rating').text();
+            data.url = url;
+        } catch (e) {
+            this.errorHandler.invariant();
+        }
 
         this.data = data;
         callback();

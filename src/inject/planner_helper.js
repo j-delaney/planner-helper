@@ -191,6 +191,7 @@ PlannerHelper.prototype.abort = function () {
         have changed their format. An error report has been sent and an update will be released
         soon to make Planner Helper compatible with these changes.`;
     this.element.children('#planner-helper-data').text(message);
+    this.disableSearchEvent();
 };
 
 /**

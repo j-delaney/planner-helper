@@ -5,20 +5,31 @@ function ErrorHandler(plannerHelper) {
 ErrorHandler.prototype.invariant = function (actual, expected) {
     if (typeof expected === "undefined") {
         expected = true;
+
+        if (typeof actual === "undefined") {
+            actual = true;
+        }
     }
+
     if (actual !== expected) {
-        this.plannerHelper.abort();
         var e = new Error();
-        logError({
-            type: 'Verify failure',
+        this.log('Invariant Failure', 'Fatal', {
             actual: actual,
             expected: expected,
             stack: e.stack
         });
+        this.plannerHelper.abort();
     }
 };
 
-ErrorHandler.prototype.logError = function (data) {
+ErrorHandler.prototype.warning = function (type, data) {
+    this.log(type, 'Warning', data);
+};
+
+ErrorHandler.prototype.log = function (type, level, data) {
+    data['type'] = type;
+    data['level'] = level;
+
     $.ajax({
         contentType: 'application/json',
         data: JSON.stringify(data),
@@ -29,4 +40,4 @@ ErrorHandler.prototype.logError = function (data) {
         method: 'POST',
         url: 'https://api.ctl-uc1-a.orchestrate.io/v0/ph-errors'
     });
-}
+};

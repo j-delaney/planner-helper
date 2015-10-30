@@ -1,4 +1,4 @@
-function GradeDist() {
+function GradeDist(errorHandler) {
     DataSection.call(this, 'Grade Distribution', 'grade-dist', [
         {label: 'A', dataField: 'aPercent'},
         {label: 'B', dataField: 'bPercent'},
@@ -7,14 +7,14 @@ function GradeDist() {
         {label: 'F', dataField: 'fPercent'},
         {label: 'W', dataField: 'wPercent'},
         {label: 'GPA', dataField: 'gpa'}
-    ]);
+    ], errorHandler);
 }
 
 GradeDist.prototype = Object.create(DataSection.prototype);
 GradeDist.prototype.constructor = GradeDist;
 
 GradeDist.prototype.getNewData = function (teacher, course, callback) {
-    var url = 'https://asucsd.ucsd.edu/gradeDistribution?' +
+    var url = 'http://asucsd.ucsd.edu/gradeDistribution?' +
         'GradeDistribution%5BTERM_CODE%5D=' +
         '&GradeDistribution%5BSUBJECT_CODE%5D='+ course.subjectCode +
         '&GradeDistribution%5BCOURSE_CODE%5D=' + course.courseCode +
@@ -24,23 +24,58 @@ GradeDist.prototype.getNewData = function (teacher, course, callback) {
         '&GradeDistribution_page=1' +
         '&ajax=gradedistribution-grid';
 
-    this.fetchHTML(url, function (page) {
+    this.fetchHTMLHttp(url, function (page) {
         if (!page) {
+            this.errorHandler.warning('Grade Distribution', {
+                teacher: teacher,
+                course: course,
+                url: url
+            });
             this.data = null;
             return callback();
         }
 
-        var tableRows = page.find('#gradedistribution-grid').children('table.items').children('tbody').children();
+        var tableRows;
+        try {
+            tableRows = page.find('#gradedistribution-grid').children('table.items').children('tbody').children();
+        } catch (e) {
+            this.errorHandler.invariant();
+            this.data = null;
+            return callback();
+        }
 
-        //If empty resulrs then return that no data could be found
-        if (tableRows.first().children().first().hasClass('empty')) {
+        if (tableRows.length === 0) {
+            this.errorHandler.invariant();
+            this.data = null;
+            return callback();
+        }
+
+        // If empty results then return that no data could be found.
+        try {
+            if (tableRows.first().children().first().hasClass('empty')) {
+                this.data = null;
+                return callback();
+            }
+        } catch (e) {
+            this.errorHandler.invariant();
             this.data = null;
             return callback();
         }
 
         var gradeDists = [];
+        // Save `this` to that.
+        var that = this;
+        var abort = false;
         $(tableRows).each(function (i, tr) {
             var cells = $(tr).children();
+
+            if (cells.length <= 11) {
+                that.errorHandler.invariant();
+                that.data = null;
+                abort = true;
+                return;
+            }
+
             var termCode = $(cells[0]).text(); //e.g. SP13
             var gpa = $(cells[5]).text();
             var aPercent = $(cells[6]).text();
@@ -60,6 +95,10 @@ GradeDist.prototype.getNewData = function (teacher, course, callback) {
                 gpa: gpa
             });
         });
+
+        if (abort) {
+            return callback();
+        }
 
         this.data = getMostRecent(gradeDists);
         this.data.url = url;

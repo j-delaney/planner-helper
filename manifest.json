@@ -1,6 +1,6 @@
 {
   "name": "Planner Helper",
-  "version": "2.0.1",
+  "version": "2.1.0",
   "manifest_version": 2,
   "description": "Hooks the class planner up to Rate My Professor, CAPE, and Grade Distributions",
   "homepage_url": "http://jdelaney.org/",
@@ -37,6 +37,7 @@
       "js": [
         "js/jquery.min.js",
         "js/underscore.min.js",
+        "src/inject/error_handler.js",
         "src/inject/data_section.js",
         "src/inject/gradeDist.js",
         "src/inject/cape.js",

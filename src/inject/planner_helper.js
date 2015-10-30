@@ -1,4 +1,6 @@
 function PlannerHelper() {
+    this.errorHandler = new ErrorHandler(this);
+
     this.rmp = new RMP();
     this.gradeDist = new GradeDist();
     this.cape = new Cape();
@@ -28,11 +30,11 @@ function PlannerHelper() {
 PlannerHelper.prototype.init = function () {
     // Insert the main element into the page
     this.$searchDiv = $('#search-div-0');
-    // verify(this.$searchDiv.length, 1);
+    this.errorHandler.invariant(this.$searchDiv.length, 1);
     this.$searchDiv.after(this.element);
 
     this.$searchContainer = $('#search-div-b-div');
-    // verify(this.$searchContainer.length, 1);
+    this.errorHandler.invariant(this.$searchContainer.length, 1);
 
     this.enableSearchEvent();
 };
@@ -94,24 +96,30 @@ PlannerHelper.prototype.makeViewDataButton = function (teacher, course) {
  * @private
  */
 PlannerHelper.prototype.attachButtonToSearchResults = function () {
+    // Prevent firing this event while running this event (causing an infinite loop).
+    this.disableSearchEvent();
+
     // If the extensions has aborted, do nothing.
     if (this.aborted) {
         return;
     }
 
-    // Prevent firing this event while running this event (causing an infinite loop).
-    this.disableSearchEvent();
-
     // Get the rows from the search results.
-    var $searchResults = $('#search-div-b-table').children('tbody').children();
+    var $searchResults;
+    try {
+        $searchResults = $('#search-div-b-table').children('tbody').children();
+    } catch (e) {
+        this.errorHandler.invariant();
+    }
+
     $searchResults.each(function (index, rowElement) {
         var $row = $(rowElement);
         if ($row.hasClass('wr-search-batch-middle') || $row.hasClass('wr-search-ac-alone')) {
             var cellData = this.getDataFromRow($row);
 
             // Verify that the course data we need is there.
-            verify(cellData.hasOwnProperty('search-div-b-table_SUBJ_CODE'));
-            verify(cellData.hasOwnProperty('search-div-b-table_CRSE_CODE'));
+            this.errorHandler.invariant(cellData.hasOwnProperty('search-div-b-table_SUBJ_CODE'));
+            this.errorHandler.invariant(cellData.hasOwnProperty('search-div-b-table_CRSE_CODE'));
 
             // Get the subject code and course code (e.g. CSE and 3, respectively) from the cellData.
             var course = {
@@ -120,7 +128,7 @@ PlannerHelper.prototype.attachButtonToSearchResults = function () {
             };
 
             // Verify that the teacher data we need is there.
-            verify(cellData.hasOwnProperty('search-div-b-table_PERSON_FULL_NAME'));
+            this.errorHandler.invariant(cellData.hasOwnProperty('search-div-b-table_PERSON_FULL_NAME'));
 
             // Get the teacher's full name from the cell data.
             var fullname = cellData['search-div-b-table_PERSON_FULL_NAME'];
@@ -128,9 +136,10 @@ PlannerHelper.prototype.attachButtonToSearchResults = function () {
             // Parse the teacher's full name into first, middle, and last.
             var matches = fullname.match(/(\w*),\s(\w*)/); //LAST:_1, FIRST:_2 MIDDLE
             if (!matches || matches.length < 3) {
-                console.log('No data found');
+                this.errorHandler.warning('Teacher Parse', {
+                    fullname: fullname
+                });
                 return;
-                // TODO: Log this
             }
             var teacher = {
                 fullname: fullname,
@@ -142,7 +151,9 @@ PlannerHelper.prototype.attachButtonToSearchResults = function () {
             // Add the button
             var button = this.makeViewDataButton(teacher, course);
 
-            $row.children('[aria-describedby="search-div-b-table_colaction"]').append(button)
+            var $buttonArea = $row.children('[aria-describedby="search-div-b-table_colaction"]');
+            this.errorHandler.invariant($buttonArea.length, 1);
+            $buttonArea.append(button)
         }
     }.bind(this));
 

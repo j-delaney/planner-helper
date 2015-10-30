@@ -81,7 +81,7 @@ PlannerHelper.prototype.makeViewDataButton = function (teacher, course) {
     // Save `this` as plannerHelper to prevent it being lost in the anonymous function.
     var plannerHelper = this;
 
-    var button = $('<input class="wrbutton wrbuttons wrbuttonspew secondary search-plan-class ui-button ui-widget ui-state-default ui-corner-all" type="button" value="View Data" />');
+    var button = $('<input class="view-data" type="button" value="View Data" />');
     button.data('course', course);
     button.data('teacher', teacher);
     button.on('click', function () {
@@ -171,8 +171,8 @@ PlannerHelper.prototype.createElement = function () {
         '<div id="planner-helper">' +
             '<h2>Planner Helper Data</h2>' +
             '<div id="planner-helper-data"></div>' +
-            '<div id="planner-helper-nodata">First, click the "view data" button for a professor to' +
-            'see their Rate My Professor reviews, CAPEs, and grade distributions</div>' +
+            '<div id="planner-helper-nodata">To view a professor\'s data, click the "View Data" button ' +
+            'that appears next to the professor\'s name in the search results.</div>' +
         '</div>'
     );
     this.element.find('#planner-helper-data').append(this.rmp.elements.main, this.cape.elements.main, this.gradeDist.elements.main);

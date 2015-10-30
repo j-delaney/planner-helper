@@ -14,3 +14,11 @@
 #planner-helper-data {
     display: none;
 }
+
+.view-data {
+    width: 100px;
+    background: #BCD6E6;
+    color: black;
+    font-weight: bold;
+
+}

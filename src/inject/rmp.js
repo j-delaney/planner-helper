@@ -39,6 +39,12 @@ function RMP(errorHandler) {
             oldLName: 'Callaf',
             newFName: 'Ilkay',
             newLName: 'Altintas'
+        },
+        {
+            oldFName: 'Kenneth',
+            oldLName: 'Barrese',
+            newFName: 'Kenny',
+            newLName: 'Barrese'
         }
     ]
 

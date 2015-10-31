@@ -5,7 +5,7 @@ function Cape(errorHandler) {
         {label: 'Recommend Class', dataField: 'recommendClass'},
         {label: 'Recommend Instructor', dataField: 'recommendInstructor'},
         {label: 'Study Hours/Week', dataField: 'studyHours'}
-    ], errorHandler);
+    ], 'No CAPEs have been submitted for this professor yet.', errorHandler);
 }
 
 Cape.prototype = Object.create(DataSection.prototype);

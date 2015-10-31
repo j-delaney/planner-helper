@@ -7,7 +7,7 @@ function GradeDist(errorHandler) {
         {label: 'F', dataField: 'fPercent'},
         {label: 'W', dataField: 'wPercent'},
         {label: 'GPA', dataField: 'gpa'}
-    ], errorHandler);
+    ], 'Grade Distribution data does not exist for this professor.', errorHandler);
 }
 
 GradeDist.prototype = Object.create(DataSection.prototype);

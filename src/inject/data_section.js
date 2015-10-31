@@ -9,7 +9,7 @@
  * @param {{label, dataField}[]} fields An array of ojects with the format {label, dataField} where label
  * is the text to use on the `page` and `dataField` is the key that will hold the relevant data in `this.data`
  */
-function DataSection(title, id, fields, errorHandler) {
+function DataSection(title, id, fields, noDataMsg, errorHandler) {
     //Object of most recently fetched data for this section
     this.data = null;
     //URL the user can click to see the most recently fetched data from the original source
@@ -18,6 +18,8 @@ function DataSection(title, id, fields, errorHandler) {
     this.cache = {};
     //The current course being parsed. To prevent race conditions hopefully
     this.currentCourse = '';
+    // The message to show when there is no data to display.
+    this.noDataMsg = noDataMsg;
 
     this.errorHandler = errorHandler;
 
@@ -37,7 +39,7 @@ function DataSection(title, id, fields, errorHandler) {
  * @private
  */
 DataSection.prototype.createElements = function () {
-    this.elements.noData = $('<div class="no-data">No data could be found for this professor</div>');
+    this.elements.noData = $('<div class="no-data">' + this.noDataMsg + '</div>');
     this.elements.loadingData = $('<div class="loading-data">Loading data...</div>');
     this.elements.yesData = $('<div class="yes-data"></div>');
     this.elements.yesData.append(this.createDataList());

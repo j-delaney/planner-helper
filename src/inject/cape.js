@@ -12,11 +12,11 @@ Cape.prototype = Object.create(DataSection.prototype);
 Cape.prototype.constructor = Cape;
 
 Cape.prototype.getNewData = function (teacher, course, callback) {
-    var url = 'https://cape.ucsd.edu/responses/Results.aspx?' +
+    var url = 'http://cape.ucsd.edu/responses/Results.aspx?' +
         'Name=' + encodeURIComponent(teacher.nomiddle)+
         '&CourseNumber=' + course.subjectCode + course.courseCode;
 
-    this.fetchHTML(url, function (page) {
+    this.fetchHTMLHttp(url, function (page) {
         // If no page object or there are no results to show
         if (!page || page.find('#ctl00_ContentPlaceHolder1_gvCAPEs_ctl01_lblEmptyData').length) {
             this.errorHandler.warning('CAPE', {

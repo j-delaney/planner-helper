@@ -21,4 +21,6 @@
     color: black;
     font-weight: bold;
     cursor: pointer;
+    display: block;
+    margin: 0 auto !important;
 }

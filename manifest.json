@@ -1,6 +1,6 @@
 {
   "name": "Planner Helper",
-  "version": "2.1.5",
+  "version": "2.1.6",
   "manifest_version": 2,
   "description": "Hooks the class planner up to Rate My Professor, CAPE, and Grade Distributions",
   "homepage_url": "http://jdelaney.org/",
@@ -16,18 +16,13 @@
     "persistent": true
   },
   "permissions": [
-    "https://act.ucsd.edu/classPlanner/planner",
-    "http://act.ucsd.edu/classPlanner/planner",
-    "https://act.ucsd.edu/classPlanner/*",
-    "http://act.ucsd.edu/classPlanner/*",
     "http://asucsd.ucsd.edu/*",
     "https://act.ucsd.edu/webreg2/*",
     "http://*.ucsd.edu/*",
     "http://search.mtvnservices.com/*",
     "http://*.mtvnservices.com/*",
     "http://search.mtvnservices.com/typeahead/suggest/*",
-    "http://*/",
-    "https://*/"
+    "http://www.ratemyprofessors.com/*"
   ],
   "content_scripts": [
     {

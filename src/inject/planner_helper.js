@@ -172,7 +172,10 @@ PlannerHelper.prototype.createElement = function () {
             '<h2>Planner Helper Data</h2>' +
             '<div id="planner-helper-data"></div>' +
             '<div id="planner-helper-nodata">To view a professor\'s data, click the "View Data" button ' +
-            'that appears next to the professor\'s name in the search results.</div>' +
+            'that appears next to the professor\'s name in the search results.<br /><br />' +
+            'If you encounter a bug or have any feature requests please feel free to ' +
+            '<a href="mailto:jadelane@ucsd.edu">email me</a>.' +
+            '</div>' +
         '</div>'
     );
     this.element.find('#planner-helper-data').append(this.rmp.elements.main, this.cape.elements.main, this.gradeDist.elements.main);

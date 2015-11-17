@@ -173,8 +173,9 @@ PlannerHelper.prototype.createElement = function () {
             '<div id="planner-helper-data"></div>' +
             '<div id="planner-helper-nodata">To view a professor\'s data, click the "View Data" button ' +
             'that appears next to the professor\'s name in the search results.<br /><br />' +
-            'If you encounter a bug or have any feature requests please feel free to ' +
-            '<a href="mailto:jadelane@ucsd.edu">email me</a>.' +
+            'If you encounter a bug or have any feature requests for the Planner Helper Chrome extension ' +
+            'please feel free to <a href="mailto:jadelane@ucsd.edu">email me</a>. Please note that ' +
+            'I am not a part of the WebReg team and bug reports for WebReg should not be sent to me.' +
             '</div>' +
         '</div>'
     );

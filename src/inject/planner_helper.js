@@ -86,6 +86,9 @@ PlannerHelper.prototype.makeViewDataButton = function (teacher, course) {
     button.data('teacher', teacher);
     button.on('click', function () {
         plannerHelper.reloadData($(this).data('teacher'), $(this).data('course'));
+        $('html, body').animate({
+            scrollTop: $("#planner-helper").offset().top
+        }, 1000);
     });
 
     return button

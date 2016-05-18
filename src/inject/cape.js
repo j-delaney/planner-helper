@@ -4,7 +4,9 @@ function Cape(errorHandler) {
         {label: 'Evals Made', dataField: 'evalsMade'},
         {label: 'Recommend Class', dataField: 'recommendClass'},
         {label: 'Recommend Instructor', dataField: 'recommendInstructor'},
-        {label: 'Study Hours/Week', dataField: 'studyHours'}
+        {label: 'Study Hours/Week', dataField: 'studyHours'},
+        {label: 'Avg Grade Expected', dataField: 'avgGradeExpected'},
+        {label: 'Avg Grade Received', dataField: 'avgGradeReceived'}
     ], 'No CAPEs have been submitted for this professor yet.', errorHandler);
 }
 

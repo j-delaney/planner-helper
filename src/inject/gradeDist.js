@@ -6,6 +6,8 @@ function GradeDist(errorHandler) {
         {label: 'D', dataField: 'dPercent'},
         {label: 'F', dataField: 'fPercent'},
         {label: 'W', dataField: 'wPercent'},
+        {label: 'P', dataField: 'pPercent'},
+        {label: 'NP', dataField: 'npPercent'},
         {label: 'GPA', dataField: 'gpa'}
     ], 'Grade Distribution data does not exist for this professor.', errorHandler);
 }
@@ -73,8 +75,7 @@ GradeDist.prototype.getNewData = function (teacher, course, callback) {
         var abort = false;
         $(tableRows).each(function (i, tr) {
             var cells = $(tr).children();
-
-            if (cells.length <= 11) {
+            if (cells.length <= 13) {
                 that.errorHandler.invariant();
                 that.data = null;
                 abort = true;
@@ -89,6 +90,8 @@ GradeDist.prototype.getNewData = function (teacher, course, callback) {
             var dPercent = $(cells[9]).text();
             var fPercent = $(cells[10]).text();
             var wPercent = $(cells[11]).text();
+            var pPercent = $(cells[12]).text();
+            var npPercent = $(cells[13]).text();
             gradeDists.push({
                 termCode: termCode,
                 aPercent: aPercent,
@@ -97,6 +100,8 @@ GradeDist.prototype.getNewData = function (teacher, course, callback) {
                 dPercent: dPercent,
                 fPercent: fPercent,
                 wPercent: wPercent,
+                pPercent: pPercent,
+                npPercent: npPercent,
                 gpa: gpa
             });
         });

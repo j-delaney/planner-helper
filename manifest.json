@@ -3,7 +3,6 @@
   "version": "2.1.8",
   "manifest_version": 2,
   "description": "Hooks the class planner up to Rate My Professor, CAPE, and Grade Distributions",
-  "homepage_url": "http://jdelaney.org/",
   "icons": {
     "16": "icons/calendar16.png",
     "48": "icons/calendar48.png",

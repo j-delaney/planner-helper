@@ -193,8 +193,8 @@ PlannerHelper.prototype.createElement = function () {
 PlannerHelper.prototype.abort = function () {
     this.aborted = true;
 
-    var message = "Sorry, it appears that either WebReg or one of the data dependencies for Planner Helper" +
-                  "have changed their format. An error report has been sent and an update will be released" +
+    var message = "Sorry, it appears that either WebReg or one of the data dependencies for Planner Helper " +
+                  "have changed their format. An error report has been sent and an update will be released " +
                   "soon to make Planner Helper compatible with these changes.";
     this.element.children('#planner-helper-data').text(message);
     this.disableSearchEvent();

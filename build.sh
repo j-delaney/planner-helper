@@ -1,3 +1,5 @@
+#!/bin/bash
+
 mkdir -pv build/planner-helper
 mkdir -pv build/planner-helper/src/inject
 mkdir -pv build/planner-helper/src/bg

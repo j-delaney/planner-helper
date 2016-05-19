@@ -160,7 +160,7 @@ DataSection.prototype.getNewData = function (teacher, course, callback) {
  * @param {{}} course A course object containg the fields subjectCode, courseCode.
  * @param callback The function to call upon completing the update.
  */
-DataSection.prototype.updateData = function (teacher, course, callback) {
+DataSection.prototype.updateData = function (teacher, course, deferred, callback) {
     this.elements.yesData.slideUp(250);
     this.elements.noData.slideUp(250);
     this.elements.errorData.slideUp(250);
@@ -171,12 +171,12 @@ DataSection.prototype.updateData = function (teacher, course, callback) {
 
     if (cacheName in this.cache) {
         this.data = this.cache[cacheName];
-        this.updateUI(cacheName);
+        deferred.resolve();
         callback();
     } else {
         this.getNewData(teacher, course, function () {
             this.cache[cacheName] = this.data;
-            this.updateUI(cacheName);
+            deferred.resolve();
             callback();
         }.bind(this));
     }

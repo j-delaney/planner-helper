@@ -9,3 +9,13 @@ This is a [Chrome extension](http://goo.gl/8ZzYSM) created to help UCSD students
 
 ## Contributions
 Contributions are greatly appreciated! Feel free to create a fork and then make a pull request. If you need any help please don't hesitate to get in touch with me.
+
+## Dependencies
+google-chrome and node-uglify are required to make the planner-helper.crx file which can be used to install the extension into Google Chrome.
+
+[Click here to download Google Chrome](https://www.google.com/chrome/browser/desktop/)
+
+To install node-uglify on ubuntu based distros:
+```
+sudo apt install node-uglify
+```

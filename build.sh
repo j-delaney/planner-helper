@@ -1,3 +1,5 @@
+#!/bin/bash
+
 mkdir -pv build/planner-helper
 mkdir -pv build/planner-helper/src/inject
 mkdir -pv build/planner-helper/src/bg
@@ -19,6 +21,6 @@ do
 done
 
 google-chrome --pack-extension=./build/planner-helper/
-./createCRX.sh build/planner-helper build/planner-helper.pem
+./crxmake.sh build/planner-helper build/planner-helper.pem
 
 rm -rv build/

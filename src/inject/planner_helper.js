@@ -218,9 +218,23 @@ PlannerHelper.prototype.reloadData = function (teacher, course) {
 
     this.element.find('h2').text('Planner Helper Data for ' + teacher.fname + ' ' + teacher.lname + ', ' + course.subjectCode + course.courseCode);
 
-    this.rmp.updateData(teacher, course, function () {});
-    this.cape.updateData(teacher, course, function () {});
-    this.gradeDist.updateData(teacher, course, function () {});
+    var rmpDeferred = $.Deferred();
+    var capeDeferred = $.Deferred();
+    var gradeDistDeferred = $.Deferred();
+
+    this.rmp.updateData(teacher, course, rmpDeferred, function () {});
+    this.cape.updateData(teacher, course, capeDeferred, function () {});
+    this.gradeDist.updateData(teacher, course, gradeDistDeferred, function () {});
+
+    var _rmp = this.rmp;
+    var _cape = this.cape;
+    var _gradeDist = this.gradeDist;
+
+    $.when(rmpDeferred, capeDeferred, gradeDistDeferred).done(function () {
+        _rmp.updateUI(_rmp.currentCourse);
+        _cape.updateUI(_cape.currentCourse);
+        _gradeDist.updateUI(_gradeDist.currentCourse);
+    });
 
     $('#planner-helper-data').show();
     $('#planner-helper-nodata').hide();

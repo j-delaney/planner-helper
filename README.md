@@ -5,6 +5,7 @@ This is a [Chrome extension](http://goo.gl/8ZzYSM) created to help UCSD students
 ## Screenshot
 ![alt tag](http://i.imgur.com/o5KvCcp.jpg)
 
+
 ## Key Features
 * Show [Rate My Professors] (http://www.ratemyprofessors.com/campusRatings.jsp?sid=1079) ratings
 * Show [CAPE] (http://www.cape.ucsd.edu/) data

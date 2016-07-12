@@ -1,9 +1,8 @@
 function RMP(errorHandler) {
     DataSection.call(this, 'Rate My Professor', 'rmp', [
         {label: 'Overall Quality', dataField: 'overallQuality'},
-        {label: 'Helpfulness', dataField: 'helpfulness'},
-        {label: 'Clarity', dataField: 'clarity'},
-        {label: 'Easiness', dataField: 'easiness'}
+        {label: 'Would take again', dataField: 'wouldTakeAgain'},
+        {label: 'Level of Difficulty', dataField: 'levelOfDifficulty'}
     ], 'Rate My Professor does not contain an entry for this professor.', errorHandler);
 
     //This is for teachers who have a different name on the class planner and RMP
@@ -152,9 +151,8 @@ RMP.prototype.getTeacherInfo = function (id, callback) {
         var data = {};
         try {
             data.overallQuality = page.find('.rating-breakdown').find('.breakdown-wrapper').children().first().find('.grade').text();
-            data.helpfulness = $(page.find('.rating-breakdown').find('.faux-slides').children()[0]).find('.rating').text();
-            data.clarity = $(page.find('.rating-breakdown').find('.faux-slides').children()[1]).find('.rating').text();
-            data.easiness = $(page.find('.rating-breakdown').find('.faux-slides').children()[2]).find('.rating').text();
+            data.wouldTakeAgain = $(page.find('.rating-breakdown').find('.breakdown-wrapper').children()[1].children[0]).find('.grade').text();
+            data.levelOfDifficulty = $(page.find('.rating-breakdown').find('.breakdown-wrapper').children()[1].children[1]).find('.grade').text();
             data.url = url;
         } catch (e) {
             this.errorHandler.invariant();

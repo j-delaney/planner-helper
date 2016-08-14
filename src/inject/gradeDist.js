@@ -18,11 +18,6 @@ GradeDist.prototype.getNewData = function (teacher, course, callback) {
     this.fetchHTMLHttp("", function (page) {
         return callback();
     }.bind(this));
-    // debug
-    // console.log("teacher.lname: " + teacher.lname);
-    // console.log("teacher.lname: " + teacher.fname);
-    // console.log("teacher.lname: " + course.subjectCode);
-    // console.log("teacher.lname: " + course.courseCode);
 
     // link to professor's cape.ucsd.edu site in order to get their 6 digit page number 
     // YQL Query URL: select href from html where url = 'https://cape.ucsd.edu/responses/Results.aspx?Name=mirza%2Cdiba&CourseNumber=cse30' and xpath = '//*[@id="ctl00_ContentPlaceHolder1_gvCAPEs_ctl02_hlViewReport"]'

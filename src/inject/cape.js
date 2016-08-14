@@ -45,7 +45,6 @@ Cape.prototype.getNewData = function (teacher, course, callback) {
             return callback();
         }
         var hrefValue = page.find('#ctl00_ContentPlaceHolder1_gvCAPEs_ctl02_hlViewReport').attr('href')
-        console.log("href: " + hrefValue)
 
         this.data = {
             enrolled: $(result[3]).text(),

@@ -14,11 +14,6 @@ GradeDist.prototype = Object.create(DataSection.prototype);
 GradeDist.prototype.constructor = GradeDist;
 
 GradeDist.prototype.getNewData = function (teacher, course, callback) {
-    // function that has to be here
-    this.fetchHTMLHttp("", function (page) {
-        return callback();
-    }.bind(this));
-
     // link to professor's cape.ucsd.edu site in order to get their 6 digit page number 
     // YQL Query URL: select href from html where url = 'https://cape.ucsd.edu/responses/Results.aspx?Name=mirza%2Cdiba&CourseNumber=cse30' and xpath = '//*[@id="ctl00_ContentPlaceHolder1_gvCAPEs_ctl02_hlViewReport"]'
     var link = "https://query.yahooapis.com/v1/public/yql?q=select%20href%20from%20html%20where%20url%3D%22https%3A%2F%2Fcape.ucsd.edu%2Fresponses%2FResults.aspx%3FName%3D" 
@@ -66,6 +61,7 @@ GradeDist.prototype.getNewData = function (teacher, course, callback) {
         // Display: "Grade Distribution data does not exist for this professor" instead of incorrect prof grade dist data
         this.data = null;
     }
+    return callback();
 };
 /**
  * Retrieves section ID - grade distribution data is available with a unique 6

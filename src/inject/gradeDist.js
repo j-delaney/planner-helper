@@ -66,15 +66,21 @@ GradeDist.prototype.getNewData = function (teacher, course, callback) {
                     }
                     catch(TypeError){
                         console.log("There was a TypeError getting the grade data");
+                        this.data = null;
+                return callback();
                     }
                 }.bind(this));
             }
             else{
                 console.log("Unable to get grade distribution data. Compare the professor's name in the teacher param with cape.ucsd.edu");
+                this.data = null;
+                return callback();
             }
         }
         else{
             console.log("Unable to get sectionID value");
+            this.data = null;
+            return callback();
         }
     }.bind(this));
 };

@@ -5,10 +5,8 @@ function GradeDist(errorHandler) {
         {label: 'C', dataField: 'cPercent'},
         {label: 'D', dataField: 'dPercent'},
         {label: 'F', dataField: 'fPercent'},
-        {label: 'W', dataField: 'wPercent'},
         {label: 'P', dataField: 'pPercent'},
-        {label: 'NP', dataField: 'npPercent'},
-        {label: 'GPA', dataField: 'gpa'}
+        {label: 'NP', dataField: 'npPercent'}
     ], 'Grade Distribution data does not exist for this professor.', errorHandler);
 }
 
@@ -16,142 +14,73 @@ GradeDist.prototype = Object.create(DataSection.prototype);
 GradeDist.prototype.constructor = GradeDist;
 
 GradeDist.prototype.getNewData = function (teacher, course, callback) {
-    var url = 'http://asucsd.ucsd.edu/gradeDistribution?' +
-        'GradeDistribution%5BTERM_CODE%5D=' +
-        '&GradeDistribution%5BSUBJECT_CODE%5D='+ course.subjectCode +
-        '&GradeDistribution%5BCOURSE_CODE%5D=' + course.courseCode +
-        '&GradeDistribution%5BCRSE_TITLE%5D=' +
-        '&GradeDistribution%5BINSTRUCTOR%5D=' + encodeURIComponent(teacher.nomiddle) +
-        '&GradeDistribution%5BGPA%5D=' +
-        '&GradeDistribution_page=1' +
-        '&ajax=gradedistribution-grid';
+    // link to professor's cape.ucsd.edu site in order to get their 6 digit page number 
+    // YQL Query URL: select href from html where url = 'https://cape.ucsd.edu/responses/Results.aspx?Name=mirza%2Cdiba&CourseNumber=cse30' and xpath = '//*[@id="ctl00_ContentPlaceHolder1_gvCAPEs_ctl02_hlViewReport"]'
+    var link = "https://query.yahooapis.com/v1/public/yql?q=select%20href%20from%20html%20where%20url%3D%22https%3A%2F%2Fcape.ucsd.edu%2Fresponses%2FResults.aspx%3FName%3D" 
+        + teacher.lname + "%252C%2B" + teacher.fname + "%26CourseNumber%3D" 
+        + course.subjectCode + course.courseCode + "%22%20and%20xpath%3D'%2F%2F*%5B%40id%3D%22ctl00_ContentPlaceHolder1_gvCAPEs_ctl02_hlViewReport%22%5D'&format=json&diagnostics=true&callback=";
 
-    this.fetchHTMLHttp(url, function (page) {
-        if (!page) {
-            this.errorHandler.warning('Grade Distribution', {
-                teacher: teacher,
-                course: course,
-                url: url
-            });
-            this.data = null;
-            return callback();
-        }
-
-        var tableRows;
-        try {
-            tableRows = page.find('#gradedistribution-grid').children('table.items').children('tbody').children();
-        } catch (e) {
-            this.errorHandler.invariant();
-            this.data = null;
-            return callback();
-        }
-
-        if (tableRows.length === 0) {
-            this.errorHandler.invariant();
-            this.data = null;
-            return callback();
-        }
-
-        // If empty results then return that no data could be found.
-        try {
-            if (tableRows.first().children().first().hasClass('empty')) {
-                this.errorHandler.warning('Grade Distribution', {
-                    teacher: teacher,
-                    course: course,
-                    url: url
-                });
+    this.fetchData(link, function(data){
+        var jsonObj;
+        var hrefValue;
+        var sectionID;
+        if(data !== null){
+            jsonObj = JSON.parse(data);
+            try{
+                hrefValue = jsonObj.query.results.a.href;
+                sectionID = hrefValue.substr(hrefValue.length-6);
+            }
+            catch(TypeError){
+                console.log("There was a TypeError getting the sectionID");
                 this.data = null;
                 return callback();
             }
-        } catch (e) {
-            this.errorHandler.invariant();
+
+            // url to allow the user to go to the cape.ucsd.edu grade distribution site
+            var url = "http://cape.ucsd.edu/responses/CAPEReport.aspx?sectionid=" + sectionID;
+
+            // get grade distribution data and display it to the user
+            // YQL Query URL: select td from html where url = 'https://cape.ucsd.edu/responses/CAPEReport.aspx?sectionid=849783' and xpath = '//*[@id="ctl00_ContentPlaceHolder1_tblGradesReceived"]/tbody/tr[2]'
+            link = "https://query.yahooapis.com/v1/public/yql?q=select%20*%20from%20html%20where%20url%20%3D%20'https%3A%2F%2Fcape.ucsd.edu%2Fresponses%2FCAPEReport.aspx%3Fsectionid%3D" 
+                    + sectionID 
+                    + "'%20and%20xpath%3D'%2F%2F*%5B%40id%3D%22ctl00_ContentPlaceHolder1_tblGradesReceived%22%5D%2Ftbody%2Ftr%5B2%5D'&format=json&diagnostics=true&callback="; 
+            // only get data if sectionID exists
+            if(sectionID !== undefined){
+                this.fetchData(link, function(data){
+                    console.log(data);
+                    jsonObj = JSON.parse(data);
+                    try{
+                        // only display data when page comes back successfully
+                        this.data = {
+                            // display data from cape website
+                            aPercent: jsonObj.query.results.tr.td[0],
+                            bPercent: jsonObj.query.results.tr.td[1],
+                            cPercent: jsonObj.query.results.tr.td[2],
+                            dPercent: jsonObj.query.results.tr.td[3],
+                            fPercent: jsonObj.query.results.tr.td[4],
+                            pPercent: jsonObj.query.results.tr.td[5],
+                            npPercent:jsonObj.query.results.tr.td[6],
+                            url: url
+                        };                                   
+                        return callback();       
+                    }
+                    catch(TypeError){
+                        console.log("There was a TypeError getting the grade data");
+                        this.data = null;
+                return callback();
+                    }
+                }.bind(this));
+            }
+            else{
+                console.log("Unable to get grade distribution data. Compare the professor's name in the teacher param with cape.ucsd.edu");
+                this.data = null;
+                return callback();
+            }
+        }
+        else{
+            console.log("Unable to get sectionID value");
             this.data = null;
             return callback();
         }
-
-        var gradeDists = [];
-        // Save `this` to that.
-        var that = this;
-        var abort = false;
-        $(tableRows).each(function (i, tr) {
-            var cells = $(tr).children();
-            if (cells.length <= 13) {
-                that.errorHandler.invariant();
-                that.data = null;
-                abort = true;
-                return;
-            }
-
-            var termCode = $(cells[0]).text(); //e.g. SP13
-            var gpa = $(cells[5]).text();
-            var aPercent = $(cells[6]).text();
-            var bPercent = $(cells[7]).text();
-            var cPercent = $(cells[8]).text();
-            var dPercent = $(cells[9]).text();
-            var fPercent = $(cells[10]).text();
-            var wPercent = $(cells[11]).text();
-            var pPercent = $(cells[12]).text();
-            var npPercent = $(cells[13]).text();
-            gradeDists.push({
-                termCode: termCode,
-                aPercent: aPercent,
-                bPercent: bPercent,
-                cPercent: cPercent,
-                dPercent: dPercent,
-                fPercent: fPercent,
-                wPercent: wPercent,
-                pPercent: pPercent,
-                npPercent: npPercent,
-                gpa: gpa
-            });
-        });
-
-        if (abort) {
-            return callback();
-        }
-
-        this.data = getMostRecent(gradeDists);
-        this.data.url = url;
-        callback();
-    }.bind(this))
+    }.bind(this));
 };
-
-/**
- * Takes a list of grade distribution rows and returns whichever one is the most recent.
- * @param gradeDists
- */
-function getMostRecent(gradeDists) {
-    //TODO: Just sort by Term Code and remove this whole function
-    var mostRecent = {};
-    var mostRecentSeason = '';
-    var mostRecentYear = '';
-
-    $.each(gradeDists, function (i, val) {
-        var thisSeason = val.termCode.substr(0, 2);
-        var thisYear = val.termCode.substr(2, 4);
-
-        if (Object.keys(mostRecent).length === 0) { //If mostRecent is empty
-            mostRecent = val;
-            mostRecentSeason = thisSeason;
-            mostRecentYear = thisYear;
-        } else {
-            if (thisYear > mostRecentYear) {
-                mostRecent = val;
-                mostRecentSeason = thisSeason;
-                mostRecentYear = thisYear;
-            } else if (thisYear === mostRecentYear) {
-                if (thisSeason === 'FA') {
-                    mostRecent = val;
-                    mostRecentSeason = thisSeason;
-                    mostRecentYear = thisYear;
-                } else if (thisSeason === 'WI' && mostRecentSeason !== 'FA') {
-                    mostRecent = val;
-                    mostRecentSeason = thisSeason;
-                    mostRecentYear = thisYear;
-                }
-            }
-        }
-    });
-
-    return mostRecent;
-}

@@ -1,6 +1,6 @@
 {
   "name": "Planner Helper",
-  "version": "2.3.0",
+  "version": "2.4.0",
   "manifest_version": 2,
   "homepage_url": "https://act.ucsd.edu/webreg2/start",
   "description": "Hooks the class planner up to Rate My Professor, CAPE, and Grade Distributions",

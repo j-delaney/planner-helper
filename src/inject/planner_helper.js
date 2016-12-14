@@ -1,7 +1,6 @@
 function PlannerHelper() {
     this.errorHandler = new ErrorHandler(this);
 
-    this.rmp = new RMP(this.errorHandler);
     this.gradeDist = new GradeDist(this.errorHandler);
     this.cape = new Cape(this.errorHandler);
 
@@ -174,7 +173,8 @@ PlannerHelper.prototype.createElement = function () {
         '<div id="planner-helper">' +
             '<h2>Planner Helper Data</h2>' +
             '<div id="planner-helper-data"></div>' +
-            '<div id="planner-helper-nodata">To view a professor\'s data, click the "View Data" button ' +
+            '<div id="planner-helper-nodata"><strong>NOTICE: RateMyProfessor has been removed due to legal concerns</strong>'+
+            'To view a professor\'s data, click the "View Data" button ' +
             'that appears next to the professor\'s name in the search results.<br /><br />' +
             'If you encounter a bug or have any feature requests for the Planner Helper Chrome extension ' +
             'please feel free to <a href="mailto:jadelane@ucsd.edu">email me</a>. Please note that ' +
@@ -182,7 +182,7 @@ PlannerHelper.prototype.createElement = function () {
             '</div>' +
         '</div>'
     );
-    this.element.find('#planner-helper-data').append(this.rmp.elements.main, this.cape.elements.main, this.gradeDist.elements.main);
+    this.element.find('#planner-helper-data').append(this.cape.elements.main, this.gradeDist.elements.main);
 };
 
 /**
@@ -218,20 +218,16 @@ PlannerHelper.prototype.reloadData = function (teacher, course) {
 
     this.element.find('h2').text('Planner Helper Data for ' + teacher.fname + ' ' + teacher.lname + ', ' + course.subjectCode + course.courseCode);
 
-    var rmpDeferred = $.Deferred();
     var capeDeferred = $.Deferred();
     var gradeDistDeferred = $.Deferred();
 
-    this.rmp.updateData(teacher, course, rmpDeferred, function () {});
     this.cape.updateData(teacher, course, capeDeferred, function () {});
     this.gradeDist.updateData(teacher, course, gradeDistDeferred, function () {});
 
-    var _rmp = this.rmp;
     var _cape = this.cape;
     var _gradeDist = this.gradeDist;
 
-    $.when(rmpDeferred, capeDeferred, gradeDistDeferred).done(function () {
-        _rmp.updateUI(_rmp.currentCourse);
+    $.when(capeDeferred, gradeDistDeferred).done(function () {
         _cape.updateUI(_cape.currentCourse);
         _gradeDist.updateUI(_gradeDist.currentCourse);
     });

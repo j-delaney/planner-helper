@@ -14,13 +14,18 @@
 #planner-helper-data {
     display: none;
 }
-
+/* View Data button*/
 .view-data {
     width: 100px;
-    background: #BCD6E6;
+    background: #EFEFEF;
+    border-radius: 6px;
     color: black;
     font-weight: bold;
     cursor: pointer;
     display: block;
     margin: 0 auto !important;
+}
+
+.view-data:hover {
+    background-color: white; 
 }

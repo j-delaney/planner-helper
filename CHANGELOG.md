@@ -1,5 +1,9 @@
 # Change Log
 
+## 2.0.1 (2017-01-03)
+### Fixed
+- Updated "View Data" buttons to better match 'Plan' and 'Waitlist' buttons
+
 ## 2.0.0 (2015-10-08)
 ### Fixed
 - Made compatible with WebReg 2.0.

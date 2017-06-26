@@ -3,7 +3,7 @@
 This is a [Chrome extension](http://goo.gl/8ZzYSM) created to help UCSD students create their [class planner](https://act.ucsd.edu/webreg2). It helps consolidate the workflow most students follow.
 
 ## Screenshot
-TODO
+![](http://i.imgur.com/kOcMx6Y.png)
 
 ## Key Features
 * Show [CAPE](http://www.cape.ucsd.edu/) data

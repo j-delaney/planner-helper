@@ -1,6 +1,6 @@
 # Planner Helper
 
-This is a [Chrome extension](http://goo.gl/8ZzYSM) created to help UCSD students create their quarterly class planner. It helps consolidate the workflow most students follow.
+This is a [chrome extension](http://goo.gl/8ZzYSM) created to help UCSD students create their quarterly class planner. It helps consolidate the workflow most students follow.
 
 ## Screenshot
 ![](http://i.imgur.com/kOcMx6Y.png)

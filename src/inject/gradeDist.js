@@ -45,49 +45,4 @@ GradeDist.prototype.getNewData = function (teacher, course, callback) {
             return callback();
         }.bind(this));
     }.bind(this));
-
-    // this.fetchData(url, function(data){
-    //     this.data = {
-    //         aGrade : "69",
-    //         url: url
-    //     }
-    //     return callback();
-    // }.bind(this));
-
-    // this.fetchHTMLHttp(url, function (page) {
-    //     var hrefValue = page.find('#ctl00_ContentPlaceHolder1_gvCAPEs_ctl02_hlViewReport').attr('href')
-    //     // use this sectionID to get grade distribution data
-    //     var sectionID = hrefValue.slice(-6);
-    //     savedSectionID = sectionID;
-    //     var gradeDistURL = "http://cape.ucsd.edu/responses/CAPEReport.aspx?sectionid=" + sectionID;
-
-    //     this.fetchData(gradeDistURL, function(data){
-    //         this.data = {
-    //             url: gradeDistURL
-    //         };
-    //     })
-
-    //     // // scrape data from the grade distribution page
-    //     // this.fetchHTMLHttp(gradeDistURL, function(page2){ 
-    //     //     var result = page2.find('#ctl00_ContentPlaceHolder1_tblGradesReceived').children('tbody').children().children();
-    //     //     // console.log("result: " + $(result[7]).text());
-
-    //     //     // console.log(page2.find('#ctl00_ContentPlaceHolder1_tblGradesReceived').children('tbody').children().children());
-    //     //     // console.log(page2.find('#ctl00_ContentPlaceHolder1_tblGradesReceived').children('tbody').children().children()[7]);
-    //     //     // console.log(page2.find('#ctl00_ContentPlaceHolder1_tblGradesReceived').children('tbody').children().children()[8]);
-    //     //     // console.log(page2.find('#ctl00_ContentPlaceHolder1_tblGradesReceived').children('tbody').children().children()[9]);
-    //     //     // console.log(page2.find('#ctl00_ContentPlaceHolder1_tblGradesReceived').children('tbody').children().children()[10]);
-    //     //     // console.log(page2.find('#ctl00_ContentPlaceHolder1_tblGradesReceived').children('tbody').children().children()[11]);
-    //     //     // console.log(page2.find('#ctl00_ContentPlaceHolder1_tblGradesReceived').children('tbody').children().children()[12]);
-    //     //     // console.log(page2.find('#ctl00_ContentPlaceHolder1_tblGradesReceived').children('tbody').children().children()[13]);
-
-    //     //     return callback();
-    //     // }.bind(this));
-
-    //     // this.data = {
-    //     //     url: gradeDistURL
-    //     // };
-
-    //     return callback();
-    // }.bind(this));
 };
